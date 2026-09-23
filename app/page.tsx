@@ -116,8 +116,8 @@ export default function Page() {
       <section id="join" className="relative">
         <SmoothScrollHero
           scrollHeight={2500}
-          desktopImage="/images/runners-motion-blur.png"
-          mobileImage="/images/runners-motion-blur.png"
+          desktopImage="/ContactMeBackground.webp"
+          mobileImage="/ContactMeBackground.webp"
           initialClipPercentage={30}
           finalClipPercentage={70}
         />

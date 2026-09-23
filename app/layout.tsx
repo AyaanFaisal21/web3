@@ -1,7 +1,15 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
+import { Italiana } from 'next/font/google'
 import './globals.css'
+
+// Display font for the landing name, matching ayaan-faisal.com (exposed as --font-italiana)
+const italiana = Italiana({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-italiana',
+})
 
 export const metadata: Metadata = {
   title: 'v0 App',
@@ -25,7 +33,7 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}</body>
+      <body className={italiana.variable}>{children}</body>
     </html>
   )
 }

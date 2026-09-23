@@ -2,7 +2,16 @@
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button"
 import { Menu, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { motion } from "framer-motion"
 import { useState } from "react"
+
+// Landing name, rendered the same way as on ayaan-faisal.com: Italiana, orange,
+// anchored to the bottom of the viewport, letters blur-fade in one by one.
+const HERO_NAME = "AYAAN"
+const NAME_FONT_SIZE = "clamp(3.2rem, 29vw, 26rem)"
+const NAME_LINE_HEIGHT = 0.78
+// Rendered height of the name block; the rest of the hero UI lives in the band above it
+const NAME_BLOCK_HEIGHT = `calc(${NAME_FONT_SIZE} * ${NAME_LINE_HEIGHT})`
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -10,16 +19,21 @@ export default function HeroSection() {
 
   const slides = [
     {
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j46TPXDHzpn3M65wMva3qHPNhwokYn.png",
-      alt: "Group of runners in motion",
+      // Starting image: the center portrait from the ayaan-faisal.com hero
+      image: "/images/ayaan/mainBackground.jpg",
+      alt: "Ayaan",
+      position: "center 42%",
     },
     {
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oH2K0gw1HEqvYhhbwJrYbmkBrbksyk.png",
-      alt: "Female runner with motion blur",
+      // Ending image: the contact section background from ayaan-faisal.com
+      image: "/ContactMeBackground.webp",
+      alt: "Contact section background",
+      position: "center",
     },
     {
       image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-DQ2brNc5Vszxllx17YNA6JqGqiHaRm.png",
       alt: "Male runner leading group",
+      position: "center",
     },
   ]
 
@@ -47,9 +61,10 @@ export default function HeroSection() {
     <div id="hero" className="relative h-screen w-full overflow-hidden bg-black">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
+        className="absolute inset-0 bg-cover bg-no-repeat transition-all duration-1000 ease-in-out"
         style={{
           backgroundImage: `url('${slides[currentSlide].image}')`,
+          backgroundPosition: slides[currentSlide].position,
         }}
       >
         {/* Dark overlay for better text readability */}
@@ -102,16 +117,12 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* Hero Content */}
-      <div className="relative z-10 flex h-full items-center justify-center px-6">
+      {/* Hero Content — centered in the space above the name */}
+      <div
+        className="relative z-10 flex h-full items-center justify-center px-6"
+        style={{ paddingBottom: NAME_BLOCK_HEIGHT }}
+      >
         <div className="text-center text-white max-w-4xl">
-          {/* Main Title */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-4 leading-none">
-            WADADA
-            <br />
-            RUN CLUB
-          </h1>
-
           {/* Subtitle */}
           <p className="text-xl md:text-2xl font-light tracking-wide mb-8 text-gray-200">Global Running Community</p>
 
@@ -126,8 +137,37 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Slider Navigation */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+      {/* Name — anchored to the bottom, same font, color and size as the ayaan-faisal.com hero */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 flex justify-center">
+        <h1
+          className="m-0 p-0 uppercase"
+          style={{
+            fontSize: NAME_FONT_SIZE,
+            lineHeight: NAME_LINE_HEIGHT,
+            color: "#c78347",
+            fontFamily: "var(--font-italiana)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {HERO_NAME.split("").map((letter, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, filter: "blur(12px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              transition={{ duration: 0.7, delay: 1.0 + i * 0.15, ease: "easeOut" }}
+              style={{ display: "inline-block" }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </h1>
+      </div>
+
+      {/* Slider Navigation — sits just above the name so the controls never overlap it */}
+      <div
+        className="absolute left-1/2 transform -translate-x-1/2 z-20"
+        style={{ bottom: `calc(${NAME_BLOCK_HEIGHT} + 1.5rem)` }}
+      >
         <div className="flex items-center space-x-4">
           {/* Previous Arrow */}
           <button
