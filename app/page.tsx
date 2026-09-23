@@ -1,17 +1,14 @@
 "use client"
 
 import HeroSection from "../hero-section"
-import { TextGradientScroll } from "@/components/ui/text-gradient-scroll"
 import { Timeline } from "@/components/ui/timeline"
 import "./globals.css"
 import { StaggerTestimonials } from "@/components/ui/stagger-testimonials"
 import { motion } from "framer-motion"
 import SmoothScrollHero from "@/components/ui/smooth-scroll-hero"
+import { AboutSection } from "@/components/about-section"
 
 export default function Page() {
-  const missionStatement =
-    "At Wadada Run Club, we believe movement isn't an option, it's a lifestyle. Born from the vibrant spirit of Jamaica, we unite runners from every corner of the globe who share our passion for pushing boundaries. Whether you're chasing sunrise through Kingston streets or conquering mountain trails, we're here to fuel your journey. Our community thrives on the rhythm of footsteps, the power of perseverance, and the joy of shared victories. Join us as we run not just for fitness, but for freedom, friendship, and the pure love of movement."
-
   const timelineEntries = [
     {
       id: 1,
@@ -47,23 +44,8 @@ export default function Page() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Mission Statement Section with Grid Background */}
-      <section id="mission" className="relative min-h-screen flex items-center justify-center py-20 bg-white">
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-grid-subtle opacity-30 pointer-events-none" />
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black tracking-wider mb-12 text-gray-900">OUR MISSION</h2>
-            <TextGradientScroll
-              text={missionStatement}
-              className="text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed text-gray-800"
-              type="word"
-              textOpacity="soft"
-            />
-          </div>
-        </div>
-      </section>
+      {/* About Section */}
+      <AboutSection />
 
       {/* Timeline Section */}
       <section id="community" className="relative py-20 bg-white">
