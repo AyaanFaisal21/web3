@@ -7,7 +7,6 @@ import "./globals.css"
 import { StaggerTestimonials } from "@/components/ui/stagger-testimonials"
 import { motion } from "framer-motion"
 import SmoothScrollHero from "@/components/ui/smooth-scroll-hero"
-import Chatbot from "../components/chatbot"
 
 export default function Page() {
   const missionStatement =
@@ -122,7 +121,6 @@ export default function Page() {
           finalClipPercentage={70}
         />
       </section>
-      <Chatbot />
     </div>
   )
 }
