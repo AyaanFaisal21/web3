@@ -9,33 +9,61 @@ import SmoothScrollHero from "@/components/ui/smooth-scroll-hero"
 import { AboutSection } from "@/components/about-section"
 
 export default function Page() {
+  // Brief work entries, carried over from the ayaan-faisal.com experience list.
   const timelineEntries = [
     {
       id: 1,
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-RJ3iTXUn5SUexF6nHMZYhMoQLNCboK.png",
-      alt: "Woman runner in artistic motion blur",
-      title: "Every Step Counts",
+      title: "Lead Software Engineer",
+      subtitle: "Privet",
+      dates: "Mar 2026 – Present",
       description:
-        "From your first jog around the block to your hundredth marathon, every runner has a story. At Wadada, we celebrate beginners who are just lacing up their shoes for the first time. Your pace doesn't matter—your passion does. What are you waiting for?",
+        "A local privacy layer for professionals who use LLMs with sensitive data. Built the Rust/Tokio HTTPS proxy and an on-device sanitization pipeline that runs in under 150ms.",
       layout: "left" as const,
     },
     {
       id: 2,
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LN9OPh9hw0b9rwSPRSslHoejcfoKHe.png",
-      alt: "Male runner with determination and focus",
-      title: "Find Your Rhythm",
+      title: "Learning Assistant, Calculus II",
+      subtitle: "Rutgers University New Brunswick",
+      dates: "Apr 2026 – Apr 2027",
       description:
-        "Whether you're chasing personal records or simply chasing the sunrise, our community embraces every type of runner. From speed demons to mindful joggers, from trail blazers to track stars—there's a place for you here. The only question is: what are you waiting for?",
+        "Lead collaborative problem-solving sessions and turn abstract calculus into intuitive frameworks, aligned with course pacing.",
       layout: "right" as const,
     },
     {
       id: 3,
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-1FdGyjVpWQANGzsDWpoPIvF5SVI2za.png",
-      alt: "Runner in dynamic motion showing strength and grace",
-      title: "Join the Movement",
+      title: "Executive Board Member",
+      subtitle: "Muslim Tech Collaborative, Rutgers",
+      dates: "Dec 2025 – Present",
       description:
-        "Running isn't just about the miles—it's about the moments. The early morning conversations, the shared struggles, the collective victories. At Wadada Run Club, you're not just joining a group, you're joining a family. So lace up, step out, and discover what you're truly capable of. Seriously, what are you waiting for?",
+        "Founding-year board. Co-ran a hackathon with $4,000+ in prizes and a networking event that connected 70 students with 10 professionals.",
       layout: "left" as const,
+    },
+    {
+      id: 4,
+      title: "Frontend Software Engineer",
+      subtitle: "Freelance",
+      dates: "Jul 2025 – Feb 2026",
+      description:
+        "Premium web experiences scoring over 90 on Lighthouse. Cut CPU render load by 65% and layout shift by 99% with compositor-only animation.",
+      layout: "right" as const,
+    },
+    {
+      id: 5,
+      title: "Officer & Fundraiser Lead",
+      subtitle: "Muslim Student Association, WWP-HSN",
+      dates: "Sept 2023 – June 2024",
+      description:
+        "Turned a rejected fundraiser into an approved one, then engaged 100+ donors and raised $1,000 for humanitarian aid.",
+      layout: "left" as const,
+    },
+    {
+      id: 6,
+      title: "Varsity Team Captain",
+      subtitle: "Esports Club (League of Legends), WWP-HSN",
+      dates: "Oct 2022 – June 2024",
+      description:
+        "Primary shot-caller for a Bronze-to-Diamond roster. Third place in the Garden State Esports League of Legends Championship, Fall 2022.",
+      layout: "right" as const,
     },
   ]
 
@@ -48,16 +76,16 @@ export default function Page() {
       <AboutSection />
 
       {/* Timeline Section */}
-      <section id="community" className="relative py-20 bg-white">
+      <section id="experience" className="relative py-20 bg-white">
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 bg-grid-subtle opacity-30 pointer-events-none" />
 
         <div className="relative z-10">
           <div className="container mx-auto px-6 mb-16">
             <div className="text-center">
-              <h2 className="text-4xl md:text-6xl font-black tracking-wider mb-6 text-gray-900">ALL RUNNERS WELCOME</h2>
+              <h2 className="text-4xl md:text-6xl font-black tracking-wider mb-6 text-gray-900">EXPERIENCE</h2>
               <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-                Every runner has a unique journey. Here are just a few stories from our inclusive community.
+                {"Where I've worked and what I've led, kept brief on purpose."}
               </p>
             </div>
           </div>

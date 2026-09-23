@@ -40,7 +40,7 @@ export default function HeroSection() {
   const navItems = [
     { name: "Home", href: "#hero" },
     { name: "About", href: "#about" },
-    { name: "Community", href: "#community" },
+    { name: "Experience", href: "#experience" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Join Us", href: "#join" },
   ]
