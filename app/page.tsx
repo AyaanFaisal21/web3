@@ -9,60 +9,86 @@ import SmoothScrollHero from "@/components/ui/smooth-scroll-hero"
 import { AboutSection } from "@/components/about-section"
 
 export default function Page() {
-  // Brief work entries, carried over from the ayaan-faisal.com experience list.
+  // Work entries from the experience reference: dates, stack, and a short description each.
   const timelineEntries = [
     {
       id: 1,
-      title: "Lead Software Engineer",
-      subtitle: "Privet",
-      dates: "Mar 2026 – Present",
+      title: "Software Engineering Intern",
+      subtitle: "Universal Selfcare",
+      dates: "Sep 2026 – Present",
+      stack: ["Go", "PostgreSQL", "pgvector", "GCP", "REST", "TF-IDF", "MMR"],
       description:
-        "A local privacy layer for professionals who use LLMs with sensitive data. Built the Rust/Tokio HTTPS proxy and an on-device sanitization pipeline that runs in under 150ms.",
+        "Healthcare startup building drug-free mental health care plans. Built the provider-facing analyst endpoint that turns a dormant symptom matcher into one ranked report per patient, and own the TF-IDF + pgvector recommendation service.",
       layout: "left" as const,
     },
     {
       id: 2,
-      title: "Learning Assistant, Calculus II",
-      subtitle: "Rutgers University New Brunswick",
-      dates: "Apr 2026 – Apr 2027",
+      title: "Founding Software Engineer",
+      subtitle: "Shortlist",
+      dates: "Jul 2026 – Present",
+      stack: ["Python", "React", "TypeScript", "PostgreSQL", "Docker", "Caddy", "AWS EC2", "AWS SES", "GitHub Actions"],
       description:
-        "Lead collaborative problem-solving sessions and turn abstract calculus into intuitive frameworks, aligned with course pacing.",
+        "Student job board at short-list.app with 102+ unique daily users. Built the REST API, cut cloud database costs 97% with an in-memory listing cache, capped LLM spend with a daily budget, and shipped a CI deploy over SSH.",
       layout: "right" as const,
     },
     {
       id: 3,
-      title: "Executive Board Member",
-      subtitle: "Muslim Tech Collaborative, Rutgers",
-      dates: "Dec 2025 – Present",
+      title: "Open Source Contributor",
+      subtitle: "PyTorch, NVIDIA CUTLASS, Sentry, Vercel AI SDK, Supabase",
+      dates: "May 2026 – Present",
+      stack: ["CUDA C++", "Python", "TypeScript", "Rust", "compute-sanitizer"],
       description:
-        "Founding-year board. Co-ran a hackathon with $4,000+ in prizes and a networking event that connected 70 students with 10 professionals.",
+        "Fixed out-of-bounds and integer-overflow paths in PyTorch and CUTLASS CUDA code, removed a duplicate JSON serialization on Sentry's AI tracing path (33.3% peak memory), and stopped Supabase's edge runtime from replacing the system TLS store.",
       layout: "left" as const,
     },
     {
       id: 4,
-      title: "Frontend Software Engineer",
-      subtitle: "Freelance",
-      dates: "Jul 2025 – Feb 2026",
+      title: "Independent Researcher",
+      subtitle: "GPU systems, self-directed",
+      dates: "Jun 2026 – Aug 2026",
+      stack: ["CUDA", "C++", "Python", "Ampere (A100, 4x A10)", "Nsight", "compute-sanitizer"],
       description:
-        "Premium web experiences scoring over 90 on Lighthouse. Cut CPU render load by 65% and layout shift by 99% with compositor-only animation.",
+        "Rebuilt ExpertPlex's tile-level preemption for MoE serving on Ampere with a device-scope atomic flag in place of Hopper-only clusters and TMA multicast. Cut an urgent task's wait from 957us to 17.4us, reproduced across five GPUs on rented hardware.",
       layout: "right" as const,
     },
     {
       id: 5,
-      title: "Officer & Fundraiser Lead",
-      subtitle: "Muslim Student Association, WWP-HSN",
-      dates: "Sept 2023 – June 2024",
+      title: "Founding Engineer",
+      subtitle: "Privet",
+      dates: "Mar 2026 – Jun 2026",
+      stack: ["Rust", "Hyper", "Tokio", "ONNX Runtime", "INT8 quantization", "SQLCipher", "HMAC-SHA256"],
       description:
-        "Turned a rejected fundraiser into an approved one, then engaged 100+ donors and raised $1,000 for humanitarian aid.",
+        "Privacy startup redacting sensitive data from LLM traffic before it leaves the machine. Built the concurrent Rust proxy, quantized the NER model to INT8 (266MB to 67MB, P95 7.08ms to 2.47ms), and kept a hash-chained, HMAC-signed audit log.",
       layout: "left" as const,
     },
     {
       id: 6,
-      title: "Varsity Team Captain",
-      subtitle: "Esports Club (League of Legends), WWP-HSN",
-      dates: "Oct 2022 – June 2024",
+      title: "Freelance Frontend Engineer",
+      subtitle: "Remote",
+      dates: "Jul 2025 – Feb 2026",
+      stack: ["React", "TypeScript", "WebGL", "Three.js", "Chrome DevTools"],
       description:
-        "Primary shot-caller for a Bronze-to-Diamond roster. Third place in the Garden State Esports League of Legends Championship, Fall 2022.",
+        "Interactive 3D web applications for paying clients. Cut Three.js tick self-time 722ms to 255ms by tying rendering to scroll progress, drove layout shift from 1.49 to 0.00, and cut asset payload 6.7MB to 716KB.",
+      layout: "right" as const,
+    },
+    {
+      id: 7,
+      title: "Learning Assistant, Calculus II",
+      subtitle: "Rutgers University",
+      dates: "Sep 2026 – Present",
+      stack: ["Teaching", "Pedagogy"],
+      description:
+        "Lead two weekly sections of 25+ students and cover peers' sections on short notice. Meet with four instructors and TAs to review sections and incorporate feedback.",
+      layout: "left" as const,
+    },
+    {
+      id: 8,
+      title: "Founding Board Member, Head of Projects",
+      subtitle: "Muslim Tech Collaborative, Rutgers",
+      dates: "Dec 2025 – Present",
+      stack: ["Event strategy", "Outreach", "Cross-team coordination"],
+      description:
+        "Joined the founding team; Head of Projects since Jul 2026. Secured $4,000+ in hackathon funding through professional outreach and run programs moving students from interest in tech to hands-on work with industry mentors.",
       layout: "right" as const,
     },
   ]

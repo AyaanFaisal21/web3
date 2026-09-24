@@ -11,6 +11,8 @@ export interface TimelineEntry {
   /** Organization. */
   subtitle?: string
   dates?: string
+  /** Tech stack, rendered as small tags. */
+  stack?: string[]
   description: string
   layout: "left" | "right"
 }
@@ -97,8 +99,20 @@ function TimelineItem({ entry }: TimelineItemProps) {
               )}
               <h3 className="text-2xl md:text-3xl font-black tracking-wide text-gray-900">{entry.title}</h3>
               {entry.subtitle && <p className="text-base md:text-lg font-semibold text-gray-600">{entry.subtitle}</p>}
+              {entry.stack && entry.stack.length > 0 && (
+                <ul className={cn("flex flex-wrap gap-1.5 pt-1", { "md:justify-end": isLeft })}>
+                  {entry.stack.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full border border-gray-300 bg-white/70 px-2.5 py-0.5 text-xs font-medium text-gray-600"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
               <p
-                className={cn("text-base md:text-lg leading-relaxed text-gray-700 max-w-md", {
+                className={cn("pt-1 text-base md:text-lg leading-relaxed text-gray-700 max-w-lg", {
                   "md:ml-auto": isLeft,
                 })}
               >
