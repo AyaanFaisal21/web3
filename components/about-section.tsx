@@ -4,23 +4,23 @@ import type { ReactNode } from "react"
 import { motion } from "framer-motion"
 import { AsciiImage } from "@/components/ui/ascii-image"
 
-// Copy carried over from the ayaan-faisal.com About section.
+// Copy cut from Ayaan's answer bank: systems and AI pull first, then agency and people, then the drive.
 const INTRO = [
-  "I started with Legos. I liked how scattered, incomplete pieces could become something whole; software gave me that same feeling, just without a messy floor to clean up.",
-  "I'm a CS, Data Science, and Math student at the Rutgers University Honors College focused on exploring how intelligent systems should be designed and used: how they manage memory, make decisions under uncertainty, stay accurate at scale, and interact with modern tools in ways they could not in the past.",
-  "I've worked across the stack, training and deploying ML models in PyTorch and ONNX, building concurrent real-time backends with WebSockets and AsyncIO, and shipping responsive frontends like this one. Along the way, I'm drawn to the abstractions that make hard things elegant: vector databases that turn meaning into math, embedding spaces where similarity is geometry, and memory architectures that let a system remember selectively.",
+  "I've always built things: Legos, technical Minecraft mods, Discord bots for friends, then web apps for paying clients. Two years ago I also had a quiet list of things that were for other people: C++, Linux, systems programming, hardware. I turned out to be wrong about every item, and finding that out became the whole plan.",
+  "So I kept going one layer beneath where most people stop. Today my work sits where performance and correctness meet AI: building agentic services, making models run faster at whatever layer the bottleneck actually lives, and asking whether the tests and correctness checks built around them hold. Every abstraction is somebody else's decision about what I don't get to touch, and the lower I go, the more of the answer I get to hold myself.",
+  "That's why most of applied CS pulls at me, from GPU scheduling and backends to ML and security, including the corners where I don't have the most experience yet. The exception is frontend. I've shipped plenty of it, but technically it's a bit boring.",
 ]
 
 const PEOPLE_FIRST = [
-  "But no amount of focus on the system will matter if the person using it doesn't benefit from it. I track how it feels to use something, and the extent to which I can really help the people I'm building for, because that doesn't just drive my work, it defines it.",
-  "I'm also drawn to problems where the right answer isn't obvious—where prudent judgment, good architecture, and a genuine understanding of human decisions all have to show up at once. Those are the problems worth building for.",
+  "Nearly everything I've built, I built without permission. This summer I rented GPUs and measured how a scheduler behaves under contention on real silicon, clocks locked because I didn't trust the reported numbers. No lab, no supervisor, two papers. I joined a startup as its first engineer, and I ship a job board that students use every day. If the opportunity isn't there, I'd rather make it than wait for it.",
+  "The other half is people. I help run a hackathon and an accelerator for student founders, and I go to hackathons and conferences more for the rooms than the outcomes. I like being early on things, and I especially like being around people who are further along than me. A year ago I joined the founding team of Rutgers' Muslim Tech Collaborative on a whim, and being surrounded by people who built things and expected me to changed my whole trajectory.",
+  "It shapes how I build, too: understanding the people I'm building for and turning ambiguous wants into design insights is the part of engineering I refuse to skip.",
 ]
 
 const MASTERS_QUOTE = "Somewhere out there, someone is better than me — that means I can definitely still improve."
 
 const MASTERS = [
-  "Growing up playing League of Legends taught me so much, but this is my favorite thing it taught me. The knowledge that someone starting where I started has already done it is why I began learning Arabic despite how daunting it looked; it's why I started working out despite how impossibly far away being in shape felt; it's why I strive for excellence even when the goal looks far away. The uncertainty and behavioral reasoning that defined the game I loved is probably also why I ended up as someone always down for a game of poker.",
-  "We're all more than our work, but through my work and beyond it, you'll learn that I'm a highly adaptable, pragmatic idealist — ambitious, realistic, and relentless — and I think those traits go well together.",
+  "League taught me that. Knowing someone who started where I started has already done it is why I began learning Arabic, why I started working out, and why I go toward the thing I don't understand and don't accept a result until I've tried to break it.",
 ]
 
 const MASTERS_CAPTION = "Statistically, I'm part of the 99th percentile of LoL players!"
