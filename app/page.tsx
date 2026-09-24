@@ -147,8 +147,8 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Smooth Scroll Hero with CTA Overlay */}
-      <section id="join" className="relative">
+      {/* Contact Section — smooth scroll reveal with the form overlay */}
+      <section id="contact" className="relative">
         <SmoothScrollHero
           scrollHeight={2500}
           desktopImage="/ContactMeBackground.webp"
