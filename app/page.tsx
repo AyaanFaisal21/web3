@@ -18,7 +18,7 @@ export default function Page() {
       dates: "Sep 2026 – Present",
       stack: ["Go", "PostgreSQL", "pgvector", "GCP", "REST", "TF-IDF", "MMR"],
       description:
-        "Healthcare startup building drug-free mental health care plans. Built the provider-facing analyst endpoint that turns a dormant symptom matcher into one ranked report per patient, and own the TF-IDF + pgvector recommendation service.",
+        "A gut-microbiome-based, drug-free program for children with autism and related conditions, tracked monthly with parents doing the logging. Built the provider-facing analyst endpoint that turns a dormant symptom matcher into one ranked report per patient, and own the TF-IDF + pgvector recommendation service.",
       layout: "left" as const,
     },
     {
