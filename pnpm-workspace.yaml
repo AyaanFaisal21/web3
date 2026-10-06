@@ -1,0 +1,4 @@
+# sharp ships prebuilt binaries (@img/sharp-*); its install script only
+# matters when compiling from source, so it doesn't need to run.
+allowBuilds:
+  sharp: false
