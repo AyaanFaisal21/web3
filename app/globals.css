@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn/ui tokens, dark only: the site has a single theme. */
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 40 30% 89%;
+    --card: 0 0% 6%;
+    --card-foreground: 40 30% 89%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 40 30% 89%;
+    --primary: 36 100% 70%;
+    --primary-foreground: 0 0% 6%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 40 30% 89%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 20%;
+    --accent-foreground: 40 30% 89%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 16%;
+    --ring: 36 100% 70%;
+    --radius: 0.5rem;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  background: #000;
+  scroll-behavior: smooth;
+}
+
+body {
+  color: hsl(var(--foreground));
+  background: #000;
+}
+
+::selection {
+  background: rgba(255, 184, 102, 0.35);
+}
+
+/* Hero scroll hint: a thin line with a dot sliding down it. */
+.scroll-line {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -12px;
+  width: 1px;
+  height: 12px;
+  background: rgba(255, 232, 200, 0.9);
+  animation: scroll-dot 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .scroll-line::after {
+    animation: none;
+  }
+}
+
+/* Darkens the corner where chapter copy sits, so text stays readable over bright geometry. */
+.chapter-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(80% 80% at 0% 100%, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+}
+
