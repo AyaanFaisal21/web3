@@ -94,3 +94,25 @@ export const REAR_FAN = { x: INNER.xMin + FAN.depth / 2, y: 0.11, z: -0.02 }
 /** Front panel IO on the outer face of the front pillar: the Connect chapter's subject. */
 export const FRONT_IO = { x: CASE.w / 2, y: -0.09, z: 0.085 }
 
+/**
+ * The CPU die under the heat spreader: eight cores in two rows with the L3 cache between
+ * them. Both the tiny die on the board and the close-up die view lay cores out with this, so
+ * the same core lights up in both.
+ */
+export const DIE = {
+  w: 0.012,
+  h: 0.01,
+  cols: 4,
+  rows: 2,
+  pitchX: 0.0028,
+  rowY: 0.0025,
+  core: [0.0022, 0.0026] as const,
+  cache: [0.0105, 0.0012] as const,
+}
+
+/** Die-local [x, y] of core `i`, in metres; row 0 is the top row. */
+export function corePosition(i: number): [number, number] {
+  const col = i % DIE.cols
+  const row = Math.floor(i / DIE.cols)
+  return [(col - (DIE.cols - 1) / 2) * DIE.pitchX, row === 0 ? DIE.rowY : -DIE.rowY]
+}

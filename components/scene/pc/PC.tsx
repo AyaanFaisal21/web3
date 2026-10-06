@@ -2,6 +2,7 @@
 
 import { Case } from './Case'
 import { Motherboard } from './Motherboard'
+import { Cpu } from './Cpu'
 import { Cooling } from './Cooling'
 import { Ram } from './Ram'
 import { Gpu } from './Gpu'
@@ -15,6 +16,7 @@ export function PC({ nameFont }: { nameFont: string }) {
     <group>
       <Case />
       <Motherboard />
+      <Cpu />
       <Cooling />
       <Ram />
       <Gpu fontFamily={nameFont} />

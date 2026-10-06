@@ -109,11 +109,6 @@ export function Motherboard() {
       <Heatsink position={[CPU.x - 0.058, CPU.y + 0.005, z]} size={[0.02, 0.095, 0.03]} fins={9} axis="y" />
 
 
-      {/* socket retention frame; the pump block sits on top and this peeks out around it */}
-      <mesh position={[CPU.x, CPU.y, z + 0.004]} material={MAT.aluminum}>
-        <boxGeometry args={[0.08, 0.08, 0.008]} />
-      </mesh>
-
       {/* DIMM slots */}
       {Array.from({ length: RAM.count }, (_, i) => (
         <mesh key={i} position={[RAM.x0 + i * RAM.pitch, RAM.y, z + 0.004]} material={MAT.pcbSlot}>
