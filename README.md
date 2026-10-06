@@ -4,12 +4,12 @@ A portfolio told through a gaming PC. The site opens on a straight-on view throu
 side panel of a running build: fans turning, RGB memory pulsing, the name lit on the side of
 the graphics card. Scrolling flies the camera into the components, one chapter per part:
 
-| Chapter    | Where the camera goes                                  |
-| ---------- | ------------------------------------------------------ |
-| About me   | past the CPU cooler, into the CPU                      |
-| Projects   | the RAM sticks, down to individual memory blocks       |
-| Experience | the GPU: technical work in the SMs, community work in the cache |
-| Connect    | the front-panel IO                                     |
+| Chapter    | What happens                                                                                   |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| About me   | the cooler lifts off the CPU, the heat spreader lifts off the die, and a close-up view tours the eight cores — one descriptor each — while the pump block's LCD cycles photos |
+| Experience | the four RAM sticks pop out; each DRAM block holds an entry, most recent first (not built yet)  |
+| Projects   | the GPU comes apart into its core blocks, each holding a project (not built yet)                |
+| Connect    | the front-panel IO                                                                              |
 
 The whole PC is built procedurally from primitives in React Three Fiber (no model files),
 so every part can be animated, lit and later opened up.
@@ -36,7 +36,9 @@ Then open <http://localhost:3000>.
   and the camera derive from it.
 - `components/scene/pc/layout.ts` — every dimension of the PC, in metres. Camera waypoints
   and parts all read from here.
-- `components/scene/pc/` — the parts: `Case`, `Motherboard`, `Cooling`, `Ram`, `Gpu`,
+- `lib/content/about.ts` — the eight core entries (title, copy, LCD photo).
+- `components/scene/die/` — the second canvas: the die close-up on one side of the screen during About.
+- `components/scene/pc/` — the parts: `Case`, `Motherboard`, `Cpu`, `Cooling`, `Ram`, `Gpu`,
   `Cables`, `Fan`, assembled in `PC.tsx`.
 - `components/scene/CameraRig.tsx` + `waypoints.ts` — scroll → camera.
 - `components/scene/Scene.tsx` — canvas, lighting, environment, bloom.
