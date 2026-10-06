@@ -1,8 +1,8 @@
 /**
  * Mutable state shared between DOM listeners (scroll, pointer) and the three.js frame loops.
  * Nothing here is React state on purpose: the camera rig and animated parts read it inside
- * useFrame, so scrolling never re-renders the React tree. The one value the DOM must render,
- * the core in focus, has a tiny subscription of its own.
+ * useFrame, so scrolling never re-renders the React tree. The few values the DOM must render
+ * (which core or chip is in focus) are exposed as tiny signals.
  */
 export const sceneState = {
   scrollY: 0,
@@ -31,24 +31,38 @@ export const sceneState = {
   },
 }
 
-const coreListeners = new Set<() => void>()
-
-export function setActiveCore(core: number) {
-  if (core === sceneState.about.core) return
-  sceneState.about.core = core
-  coreListeners.forEach((listener) => listener())
-}
-
-export function subscribeActiveCore(listener: () => void) {
-  coreListeners.add(listener)
-  return () => {
-    coreListeners.delete(listener)
+/** A number the frame loop writes and the DOM subscribes to (via useSyncExternalStore). */
+function signal(read: () => number, write: (value: number) => void) {
+  const listeners = new Set<() => void>()
+  return {
+    get: read,
+    set(value: number) {
+      if (value === read()) return
+      write(value)
+      listeners.forEach((listener) => listener())
+    },
+    subscribe(listener: () => void) {
+      listeners.add(listener)
+      return () => {
+        listeners.delete(listener)
+      }
+    },
   }
 }
 
-export function getActiveCore() {
-  return sceneState.about.core
-}
+export const activeCore = signal(
+  () => sceneState.about.core,
+  (value) => {
+    sceneState.about.core = value
+  },
+)
+
+export const activeChip = signal(
+  () => sceneState.ram.chip,
+  (value) => {
+    sceneState.ram.chip = value
+  },
+)
 
 export function bindSceneState() {
   const onScroll = () => {

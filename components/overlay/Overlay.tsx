@@ -1,11 +1,9 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
 import dynamic from 'next/dynamic'
 import { FileText, Github, Linkedin } from 'lucide-react'
 import { CHAPTERS } from '@/lib/journey'
-import { CORES } from '@/lib/content/about'
-import { getActiveCore, subscribeActiveCore } from '@/components/scene/state'
+import { AboutCopy, ExperienceCopy, PlainCopy, eyebrow } from './ChapterCopy'
 
 const DieScene = dynamic(() => import('@/components/scene/die/DieScene'), { ssr: false })
 
@@ -27,63 +25,6 @@ const SOCIALS = [
     Icon: FileText,
   },
 ]
-
-/** Chapter copy. Experience and Projects are placeholders until their interiors are built. */
-const COPY: Record<string, { index: string; title: string; body: string }> = {
-  about: {
-    index: '01',
-    title: 'About me',
-    body: 'Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.',
-  },
-  experience: { index: '02', title: 'Experience', body: 'Where I have worked, most recent first.' },
-  projects: { index: '03', title: 'Projects', body: 'What I have built, in parallel.' },
-}
-
-const eyebrow = 'text-[11px] uppercase tracking-[0.3em]'
-const copyBlock = 'relative z-20 max-w-md px-6 pb-24 md:px-10 md:pb-28'
-
-function ChapterCopy({ id }: { id: string }) {
-  const copy = COPY[id]
-  return (
-    <div className={copyBlock}>
-      <p className={`mb-3 text-[#d9b77a]/80 ${eyebrow}`}>
-        {copy.index} — {copy.title}
-      </p>
-      <h2 className="mb-4 font-display text-5xl leading-none md:text-6xl">{copy.title}</h2>
-      <p className="text-sm leading-relaxed text-white/60 md:text-base">{copy.body}</p>
-    </div>
-  )
-}
-
-/**
- * The About chapter's copy: the chapter intro while the stack pulls apart, then one entry per
- * core as the tour advances. Both occupy the same grid cell so swapping never shifts layout.
- */
-function AboutCopy() {
-  const core = useSyncExternalStore(subscribeActiveCore, getActiveCore, () => -1)
-  const entry = core >= 0 ? CORES[core] : null
-  const intro = COPY.about
-  return (
-    <div className={`${copyBlock} grid md:w-1/2 md:max-w-none md:pr-16`}>
-      <div className="col-start-1 row-start-1 transition-opacity duration-500" style={{ opacity: entry ? 0 : 1 }}>
-        <p className={`mb-3 text-[#d9b77a]/80 ${eyebrow}`}>
-          {intro.index} — {intro.title}
-        </p>
-        <h2 className="mb-4 font-display text-5xl leading-none md:text-6xl">{intro.title}</h2>
-        <p className="max-w-md text-sm leading-relaxed text-white/60 md:text-base">{intro.body}</p>
-      </div>
-      {entry && (
-        <div key={core} className="core-in col-start-1 row-start-1">
-          <p className={`mb-3 text-[#d9b77a]/80 ${eyebrow}`}>
-            Core {String(core + 1).padStart(2, '0')} / {String(CORES.length).padStart(2, '0')} — {entry.title}
-          </p>
-          <h2 className="mb-4 font-display text-5xl leading-none md:text-6xl">{entry.title}</h2>
-          <p className="max-w-md text-sm leading-relaxed text-white/60 md:text-base">{entry.body}</p>
-        </div>
-      )}
-    </div>
-  )
-}
 
 /**
  * The HTML layer over the 3D scene: a fixed header, one full-height section per chapter whose
@@ -129,8 +70,8 @@ export function Overlay() {
                 <AboutCopy />
               </>
             )}
-
-            {(chapter.id === 'experience' || chapter.id === 'projects') && <ChapterCopy id={chapter.id} />}
+            {chapter.id === 'experience' && <ExperienceCopy />}
+            {chapter.id === 'projects' && <PlainCopy id="projects" />}
 
             {chapter.id === 'connect' && (
               <div className="relative z-20 max-w-lg px-6 pb-24 md:px-10 md:pb-28">

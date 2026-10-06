@@ -4,23 +4,19 @@ import { useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { CHAPTERS, CHAPTER_STARTS_VH, TRAVEL_VH, chapterIndex, chapterLocalProgress } from '@/lib/journey'
-import { CORES } from '@/lib/content/about'
 import { CASE } from './pc/layout'
 import { WAYPOINTS, type Waypoint } from './waypoints'
-import { sceneState, setActiveCore } from './state'
+import { sceneState } from './state'
+import { EXPERIENCE_FINALE, ease, runAboutProgram, runExperienceProgram } from './programs'
 
 type Vec = [number, number, number]
 
 const ABOUT = chapterIndex('about')
 const EXPERIENCE = chapterIndex('experience')
 const UP = new THREE.Vector3(0, 1, 0)
-
-const ease = (t: number) => t * t * (3 - 2 * t)
-
-/** 0 before `a`, 1 after `b`, smooth in between. */
-function smooth(p: number, a: number, b: number) {
-  return ease(THREE.MathUtils.clamp((p - a) / (b - a), 0, 1))
-}
+const scratch = new THREE.Vector3()
+const right = new THREE.Vector3()
+const upv = new THREE.Vector3()
 
 function lerp3(out: THREE.Vector3, a: Vec, b: Vec, t: number) {
   return out.set(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t)
@@ -35,10 +31,6 @@ function bezier(out: THREE.Vector3, a: Vec, v: Vec, b: Vec, t: number) {
     a[2] * u * u + v[2] * 2 * u * t + b[2] * t * t,
   )
 }
-
-const scratch = new THREE.Vector3()
-const right = new THREE.Vector3()
-const upv = new THREE.Vector3()
 
 /** A waypoint's position, pushed back along its line of sight until its `fit` width fits the viewport. */
 function fittedPos(w: Waypoint, tanHalfFov: number, aspect: number): Vec {
@@ -57,26 +49,10 @@ function frameOf(w: Waypoint, aspect: number): [number, number] {
 }
 
 /**
- * The About chapter's program, as a function of progress through its hold: the pump block
- * lifts, the heat spreader follows, the die view fades in and the tour visits each core.
- * The stack stays open through Experience and closes near the end of it.
- */
-function runAboutProgram(pAbout: number, pExperience: number) {
-  const about = sceneState.about
-  about.explode = Math.min(smooth(pAbout, 0, 0.1), 1 - smooth(pExperience, 0.55, 0.95))
-  about.lid = Math.min(smooth(pAbout, 0.07, 0.16), 1 - smooth(pExperience, 0.45, 0.8))
-  about.dieOpacity = smooth(pAbout, 0.12, 0.18) * (1 - smooth(pAbout, 0.92, 0.97))
-  const tourStart = 0.18
-  const tourEnd = 0.92
-  const inTour = pAbout > tourStart && pAbout < tourEnd
-  setActiveCore(inTour ? Math.min(CORES.length - 1, Math.floor(((pAbout - tourStart) / (tourEnd - tourStart)) * CORES.length)) : -1)
-}
-
-/**
  * Drives the camera from scroll position. Each chapter owns a leg of the journey: the camera
  * travels to that chapter's waypoint over the TRAVEL_VH before its section reaches the top of
- * the viewport, then holds while the chapter's own program runs. Motion is smoothed with
- * exponential damping, and a little pointer parallax is mixed in while the hero is on screen.
+ * the viewport, then holds while the chapter's own program runs (which may move the camera
+ * between stops). Motion is damped, and pointer parallax is mixed in while the hero is up.
  */
 export function CameraRig() {
   const { camera, size } = useThree()
@@ -101,6 +77,14 @@ export function CameraRig() {
     const hero: Waypoint = { pos: [0, 0, CASE.d / 2 + Math.max(distH, distW)], look: WAYPOINTS.hero.look }
     const points = CHAPTERS.map((c) => (c.id === 'hero' ? hero : WAYPOINTS[c.id]))
 
+    // Chapter programs run every frame: they own the exploded parts, whatever leg we are on.
+    const pAbout = chapterLocalProgress(y, vh, ABOUT)
+    const pExperience = chapterLocalProgress(y, vh, EXPERIENCE)
+    runAboutProgram(pAbout, pExperience)
+    const experiencePose = runExperienceProgram(pExperience, aspect)
+    // The pose a chapter leaves the camera in, which the next leg departs from.
+    const endPose = (i: number) => (i === EXPERIENCE ? EXPERIENCE_FINALE : points[i])
+
     // Which leg are we on? The last chapter whose travel window has started.
     let k = 0
     for (let i = 1; i < points.length; i++) {
@@ -114,8 +98,8 @@ export function CameraRig() {
     } else {
       const start = (CHAPTER_STARTS_VH[k] / 100) * vh - travel
       const t = ease(THREE.MathUtils.clamp((y - start) / travel, 0, 1))
-      const a = points[k - 1]
-      const b = points[k]
+      const a = endPose(k - 1)
+      const b = k === EXPERIENCE && t >= 1 && experiencePose ? experiencePose : points[k]
       const aPos = fittedPos(a, tanHalfFov, aspect)
       const bPos = fittedPos(b, tanHalfFov, aspect)
       if (b.via) bezier(targetPos.current, aPos, b.via, bPos, t)
@@ -127,11 +111,7 @@ export function CameraRig() {
       fy = fa[1] + (fb[1] - fa[1]) * t
     }
 
-    // Chapter programs.
-    const pAbout = chapterLocalProgress(y, vh, ABOUT)
-    const pExperience = chapterLocalProgress(y, vh, EXPERIENCE)
-    runAboutProgram(pAbout, pExperience)
-    // A slow drift around the open stack while the tour runs; zero at both ends of the chapter.
+    // A slow drift around the open stack while the About tour runs; zero at both ends.
     const drift = Math.sin(pAbout * Math.PI)
     targetPos.current.x += drift * 0.02
     targetPos.current.y += drift * 0.012

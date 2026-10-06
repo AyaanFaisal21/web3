@@ -7,8 +7,8 @@ the graphics card. Scrolling flies the camera into the components, one chapter p
 | Chapter    | What happens                                                                                   |
 | ---------- | ---------------------------------------------------------------------------------------------- |
 | About me   | the cooler lifts off the CPU, the heat spreader lifts off the die, and a close-up view tours the eight cores — one descriptor each — while the pump block's LCD cycles photos |
-| Experience | the four RAM sticks pop out; each DRAM block holds an entry, most recent first (not built yet)  |
-| Projects   | the GPU comes apart into its core blocks, each holding a project (not built yet)                |
+| Experience | the four RAM sticks rise out of their slots, turn to the glass and fan out; the front heat spreaders slide off and the camera visits the six DRAM chips that hold entries (one stick per era, most recent first); then the sticks reseat, the lid closes and the block drops |
+| Projects   | the GPU comes apart: agentic/full-stack projects in the SMs, data/ML in the Tensor Cores, low-level in the memory controllers (not built yet) |
 | Connect    | the front-panel IO                                                                              |
 
 The whole PC is built procedurally from primitives in React Three Fiber (no model files),
@@ -36,7 +36,9 @@ Then open <http://localhost:3000>.
   and the camera derive from it.
 - `components/scene/pc/layout.ts` — every dimension of the PC, in metres. Camera waypoints
   and parts all read from here.
-- `lib/content/about.ts` — the eight core entries (title, copy, LCD photo).
+- `lib/content/about.ts`, `lib/content/experience.ts` — the chapter content: eight cores, six experience entries with their stick/chip.
+- `components/scene/programs.ts` — each chapter's scroll program: what pulls apart when, which core/chip is in focus, where the camera stops.
+- `components/scene/pc/ramExplode.ts` — the stick poses shared by the RAM model and the camera.
 - `components/scene/die/` — the second canvas: the die close-up on one side of the screen during About.
 - `components/scene/pc/` — the parts: `Case`, `Motherboard`, `Cpu`, `Cooling`, `Ram`, `Gpu`,
   `Cables`, `Fan`, assembled in `PC.tsx`.

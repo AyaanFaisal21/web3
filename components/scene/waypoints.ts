@@ -1,5 +1,5 @@
 import type { ChapterId } from '@/lib/journey'
-import { CASE, COOLER, CPU, FRONT_IO, GPU_BOX, RAM, RAM_CENTER_X, RAM_TOP_Z } from './pc/layout'
+import { CASE, COOLER, CPU, FRONT_IO, GPU_BOX } from './pc/layout'
 
 export type Waypoint = {
   pos: [number, number, number]
@@ -33,10 +33,11 @@ export const WAYPOINTS: Record<ChapterId, Waypoint> = {
     fit: 0.2,
     frame: { landscape: [-0.15, 0], portrait: [-0.035, -0.075] },
   },
+  // The overview of the four sticks once they have risen, turned to the glass and fanned out.
   experience: {
-    pos: [RAM_CENTER_X + 0.04, RAM.y, RAM_TOP_Z + 0.2],
-    look: [RAM_CENTER_X, RAM.y, RAM_TOP_Z],
-    fit: 0.1,
+    pos: [0.0375, 0.06, 0.3],
+    look: [0.0375, 0.06, -0.04],
+    fit: 0.2,
   },
   projects: {
     pos: [GPU_BOX.cx + 0.02, GPU_BOX.cy + 0.04, GPU_BOX.faceZ + 0.27],
