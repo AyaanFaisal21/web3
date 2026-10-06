@@ -20,6 +20,15 @@ export const sceneState = {
     /** Opacity of the die close-up view. */
     dieOpacity: 0,
   },
+  /** The Experience chapter's program. */
+  ram: {
+    /** Per stick, 0 = seated in its slot … 1 = out, turned to the glass and fanned. */
+    open: [0, 0, 0, 0],
+    /** 0..1: how far the front heat spreaders have slid off to bare the chips. */
+    bare: 0,
+    /** Index into EXPERIENCES of the chip in focus, or -1. */
+    chip: -1,
+  },
 }
 
 const coreListeners = new Set<() => void>()
