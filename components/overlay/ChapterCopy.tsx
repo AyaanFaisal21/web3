@@ -3,108 +3,107 @@
 import { useSyncExternalStore } from 'react'
 import { CORES } from '@/lib/content/about'
 import { EXPERIENCES } from '@/lib/content/experience'
-import { activeChip, activeCore } from '@/components/scene/state'
+import { CATEGORIES, PROJECTS } from '@/lib/content/projects'
+import { activeChip, activeCore, activeProject } from '@/components/scene/state'
+import { Terminal, type TermLine } from './Terminal'
 
 export const eyebrow = 'text-[11px] uppercase tracking-[0.3em]'
-const block = 'relative z-20 px-6 pb-24 md:px-10 md:pb-28'
-const label = `mb-3 text-[#d9b77a]/80 ${eyebrow}`
-const title = 'mb-4 font-display text-5xl leading-none md:text-6xl'
-const body = 'text-sm leading-relaxed text-white/60 md:text-base'
+const block = 'relative z-20 w-full px-5 pb-20 md:px-10 md:pb-24'
+const half = 'md:w-1/2 md:pr-12'
 
-/** Chapter intros; About and Experience swap to per-item copy once their tours begin. */
-export const COPY: Record<string, { index: string; title: string; body: string }> = {
-  about: {
-    index: '01',
-    title: 'About me',
-    body: 'Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.',
-  },
-  experience: { index: '02', title: 'Experience', body: 'Where I have worked, most recent first.' },
-  projects: { index: '03', title: 'Projects', body: 'What I have built, in parallel.' },
+const INTRO: Record<string, { cmd: string; title: string; body: string }> = {
+  about: { cmd: 'cat about.md', title: 'About me', body: 'Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.' },
+  experience: { cmd: 'cat experience.md', title: 'Experience', body: 'Where I have worked, one DRAM package per role, most recent first.' },
+  projects: { cmd: 'cat projects.md', title: 'Projects', body: 'Fourteen builds mapped onto the die by what they are: kernels and systems in the SMs, models in the Tensor Cores, products in the memory system.' },
 }
 
-/** `**bold**` markers from the previous site's copy, rendered as emphasis. */
-function Rich({ text }: { text: string }) {
+const introLines = (id: string): TermLine[] => [
+  { kind: 'cmd', text: INTRO[id].cmd },
+  { kind: 'h1', text: INTRO[id].title },
+  { kind: 'text', text: INTRO[id].body },
+]
+
+/** Both the intro and the item share one grid cell, so swapping never shifts layout. */
+function Swap({ id, title, item, itemKey, wide = false }: { id: string; title: string; item: TermLine[] | null; itemKey: number; wide?: boolean }) {
   return (
-    <>
-      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-        part.startsWith('**') ? (
-          <strong key={i} className="font-semibold text-[#efe6d4]">
-            {part.slice(2, -2)}
-          </strong>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
+    <div className={`${block} grid ${wide ? 'max-w-2xl' : 'max-w-xl'} ${half}`}>
+      <div className="col-start-1 row-start-1 transition-opacity duration-500" style={{ opacity: item ? 0 : 1 }} aria-hidden={!!item}>
+        <Terminal title={`${id} — bash`} lines={introLines(id)} />
+      </div>
+      {item && (
+        <div key={itemKey} className="col-start-1 row-start-1">
+          <Terminal title={title} lines={item} className="max-h-[62vh] md:max-h-none" />
+        </div>
       )}
-    </>
-  )
-}
-
-function Intro({ id }: { id: string }) {
-  const copy = COPY[id]
-  return (
-    <>
-      <p className={label}>
-        {copy.index} — {copy.title}
-      </p>
-      <h2 className={title}>{copy.title}</h2>
-      <p className={`max-w-md ${body}`}>{copy.body}</p>
-    </>
-  )
-}
-
-export function PlainCopy({ id }: { id: string }) {
-  return (
-    <div className={`${block} max-w-md`}>
-      <Intro id={id} />
     </div>
   )
 }
 
-/**
- * The About chapter's copy: the intro while the stack pulls apart, then one entry per core as
- * the tour advances. Both occupy the same grid cell so swapping never shifts layout.
- */
 export function AboutCopy() {
   const core = useSyncExternalStore(activeCore.subscribe, activeCore.get, () => -1)
   const entry = core >= 0 ? CORES[core] : null
-  return (
-    <div className={`${block} grid max-w-md md:w-1/2 md:max-w-none md:pr-16`}>
-      <div className="col-start-1 row-start-1 transition-opacity duration-500" style={{ opacity: entry ? 0 : 1 }}>
-        <Intro id="about" />
-      </div>
-      {entry && (
-        <div key={core} className="core-in col-start-1 row-start-1">
-          <p className={label}>
-            Core {String(core + 1).padStart(2, '0')} / {String(CORES.length).padStart(2, '0')} — {entry.title}
-          </p>
-          <h2 className={title}>{entry.title}</h2>
-          <p className={`max-w-md ${body}`}>{entry.body}</p>
-        </div>
-      )}
-    </div>
-  )
+  const lines: TermLine[] | null = entry && [
+    { kind: 'cmd', text: `cat cores/${String(core).padStart(2, '0')}-${entry.key}.md`, cwd: '~/about' },
+    { kind: 'h1', text: entry.title },
+    { kind: 'meta', label: 'core', text: `${core + 1} / ${CORES.length}` },
+    { kind: 'text', text: entry.body },
+  ]
+  return <Swap id="about" title={`about/${entry?.key ?? ''} — bash`} item={lines} itemKey={core} />
 }
 
-/** The Experience chapter's copy: the intro, then one entry per DRAM chip the camera visits. */
 export function ExperienceCopy() {
   const chip = useSyncExternalStore(activeChip.subscribe, activeChip.get, () => -1)
   const entry = chip >= 0 ? EXPERIENCES[chip] : null
+  const lines: TermLine[] | null = entry && [
+    { kind: 'cmd', text: `cat ${entry.key}.md`, cwd: '~/experience' },
+    { kind: 'h1', text: entry.role },
+    { kind: 'meta', label: 'org', text: entry.company },
+    { kind: 'meta', label: 'when', text: entry.dates },
+    { kind: 'meta', label: 'dram', text: `${chip + 1} / ${EXPERIENCES.length}` },
+    { kind: 'meta', label: 'stack', text: entry.stack.join(' · ') },
+    { kind: 'blank' },
+    { kind: 'text', text: entry.summary },
+  ]
+  return <Swap id="experience" title={`experience/${entry?.key ?? ''} — bash`} item={lines} itemKey={chip} />
+}
+
+export function ProjectsCopy() {
+  const project = useSyncExternalStore(activeProject.subscribe, activeProject.get, () => -1)
+  const entry = project >= 0 ? PROJECTS[project] : null
+  const lines: TermLine[] | null = entry && [
+    { kind: 'cmd', text: `cat ${entry.key}.md`, cwd: '~/projects' },
+    { kind: 'h1', text: entry.subtitle ? `${entry.title} — ${entry.subtitle}` : entry.title },
+    { kind: 'meta', label: 'block', text: `${CATEGORIES[entry.category].block} · ${project + 1} / ${PROJECTS.length}` },
+    { kind: 'meta', label: 'kind', text: CATEGORIES[entry.category].label },
+    { kind: 'meta', label: 'stack', text: entry.stack.join(' · ') },
+    { kind: 'blank' },
+    { kind: 'text', text: entry.description },
+    ...entry.facts.map((f): TermLine => ({ kind: 'item', text: f })),
+    ...(entry.url ? [{ kind: 'link', label: entry.url.replace(/^https?:\/\//, ''), href: entry.url } as TermLine] : []),
+    ...(entry.repo ? [{ kind: 'link', label: entry.repo.replace(/^https?:\/\//, ''), href: entry.repo } as TermLine] : []),
+  ]
+  return <Swap id="projects" title={`projects/${entry?.key ?? ''} — bash`} item={lines} itemKey={project} wide />
+}
+
+const SOCIALS = [
+  { label: 'github.com/AyaanFaisal21', href: 'https://github.com/AyaanFaisal21' },
+  { label: 'linkedin.com/in/ayaanfaisal21', href: 'https://www.linkedin.com/in/ayaanfaisal21/' },
+  { label: 'x.com/unorth_doX', href: 'https://x.com/unorth_doX' },
+  { label: 'resume.pdf', href: 'https://drive.google.com/file/d/139lJn3_8caRHtZbu62m21gOkHSnOi0kh/view?usp=sharing' },
+]
+
+export function ConnectCopy() {
+  const lines: TermLine[] = [
+    { kind: 'cmd', text: 'cat contact.txt' },
+    { kind: 'h1', text: "Don't be a Stranger" },
+    { kind: 'text', text: "Whether it's a role, a project, or just a conversation — reach out, I'm always down to talk." },
+    { kind: 'blank' },
+    { kind: 'cmd', text: 'ls links/' },
+    ...SOCIALS.map((s): TermLine => ({ kind: 'link', label: s.label, href: s.href })),
+  ]
   return (
-    <div className={`${block} grid max-w-lg md:w-1/2 md:max-w-none md:pr-16`}>
-      <div className="col-start-1 row-start-1 transition-opacity duration-500" style={{ opacity: entry ? 0 : 1 }}>
-        <Intro id="experience" />
-      </div>
-      {entry && (
-        <div key={chip} className="core-in col-start-1 row-start-1 max-w-lg">
-          <p className={label}>
-            DRAM {String(chip + 1).padStart(2, '0')} / {String(EXPERIENCES.length).padStart(2, '0')} — {entry.company}
-          </p>
-          <h2 className="mb-2 font-display text-4xl leading-none md:text-5xl">{entry.role}</h2>
-          <p className={`mb-4 text-[#d9b77a]/70 ${eyebrow}`}>{entry.dates}</p>
-          <p className={`mb-4 text-white/45 ${eyebrow}`}>{entry.stack.join(' · ')}</p>
-          <p className={body}>{entry.summary}</p>
-        </div>
-      )}
+    <div className={`${block} max-w-xl`}>
+      <Terminal title="contact — bash" lines={lines} />
     </div>
   )
 }
