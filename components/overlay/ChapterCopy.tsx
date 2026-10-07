@@ -101,17 +101,8 @@ export function ExperienceCopy() {
           </p>
           <h2 className="mb-2 font-display text-4xl leading-none md:text-5xl">{entry.role}</h2>
           <p className={`mb-4 text-[#d9b77a]/70 ${eyebrow}`}>{entry.dates}</p>
-          {entry.summary && <p className={`mb-4 hidden md:block ${body}`}>{entry.summary}</p>}
-          <ul className={`space-y-2 ${body}`}>
-            {entry.bullets.map((b, i) => (
-              <li key={i} className={`flex gap-3 ${i === 2 ? 'hidden md:flex' : ''}`}>
-                <span className="mt-[0.55em] h-px w-3 shrink-0 bg-[#d9b77a]/60" aria-hidden />
-                <span>
-                  <Rich text={b} />
-                </span>
-              </li>
-            ))}
-          </ul>
+          <p className={`mb-4 text-white/45 ${eyebrow}`}>{entry.stack.join(' · ')}</p>
+          <p className={body}>{entry.summary}</p>
         </div>
       )}
     </div>
