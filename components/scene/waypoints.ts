@@ -1,5 +1,6 @@
 import type { ChapterId } from '@/lib/journey'
 import { CASE, COOLER, CPU, FRONT_IO, GPU_BOX } from './pc/layout'
+import { CARD } from './pc/gpuLayout'
 
 export type Waypoint = {
   pos: [number, number, number]
@@ -39,10 +40,11 @@ export const WAYPOINTS: Record<ChapterId, Waypoint> = {
     look: [0.0375, 0.06, -0.04],
     fit: 0.2,
   },
+  // The card once it has slid out and turned its fan side to the glass: an upright 32 × 14 cm board.
   projects: {
-    pos: [GPU_BOX.cx + 0.02, GPU_BOX.cy + 0.04, GPU_BOX.faceZ + 0.27],
-    look: [GPU_BOX.cx, GPU_BOX.cy, GPU_BOX.faceZ],
-    fit: 0.26,
+    pos: [GPU_BOX.cx, GPU_BOX.cy + CARD.rise - 0.005, GPU_BOX.cz + CARD.slide + 0.37],
+    look: [GPU_BOX.cx, GPU_BOX.cy + CARD.rise, GPU_BOX.cz + CARD.slide],
+    fit: 0.36,
   },
   connect: {
     pos: [0.44, -0.03, 0.2],

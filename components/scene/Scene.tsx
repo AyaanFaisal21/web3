@@ -16,7 +16,7 @@ export default function Scene({ nameFont }: { nameFont: string }) {
     <div className="fixed inset-0 z-0" aria-hidden>
       <Canvas
         dpr={[1, 1.75]}
-        camera={{ fov: 46, near: 0.02, far: 12, position: [0, 0, 0.9] }}
+        camera={{ fov: 46, near: 0.008, far: 12, position: [0, 0, 0.9] }}
         gl={{ antialias: false, powerPreference: 'high-performance', stencil: false }}
       >
         <color attach="background" args={['#000000']} />

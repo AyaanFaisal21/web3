@@ -29,6 +29,15 @@ export const sceneState = {
     /** Index into EXPERIENCES of the chip in focus, or -1. */
     chip: -1,
   },
+  /** The Projects chapter's program. */
+  gpu: {
+    /** 0..1: the card has slid out of its slot and turned its fan side to the glass. */
+    out: 0,
+    /** 0..1: shroud and heatsink have lifted away to bare the PCB and die. */
+    bare: 0,
+    /** Index into PROJECTS of the block in focus, or -1. */
+    project: -1,
+  },
 }
 
 /** A number the frame loop writes and the DOM subscribes to (via useSyncExternalStore). */
@@ -61,6 +70,13 @@ export const activeChip = signal(
   () => sceneState.ram.chip,
   (value) => {
     sceneState.ram.chip = value
+  },
+)
+
+export const activeProject = signal(
+  () => sceneState.gpu.project,
+  (value) => {
+    sceneState.gpu.project = value
   },
 )
 

@@ -12,7 +12,7 @@ export const CHAPTERS = [
   { id: 'hero',       label: 'Home',       vh: 100 },
   { id: 'about',      label: 'About',      vh: 700 },
   { id: 'experience', label: 'Experience', vh: 600 },
-  { id: 'projects',   label: 'Projects',   vh: 150 },
+  { id: 'projects',   label: 'Projects',   vh: 900 },
   { id: 'connect',    label: 'Connect',    vh: 100 },
 ] as const
 

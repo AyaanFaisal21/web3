@@ -7,12 +7,13 @@ import { CHAPTERS, CHAPTER_STARTS_VH, TRAVEL_VH, chapterIndex, chapterLocalProgr
 import { CASE } from './pc/layout'
 import { WAYPOINTS, type Waypoint } from './waypoints'
 import { sceneState } from './state'
-import { EXPERIENCE_FINALE, ease, runAboutProgram, runExperienceProgram } from './programs'
+import { EXPERIENCE_FINALE, ease, runAboutProgram, runExperienceProgram, runProjectsProgram } from './programs'
 
 type Vec = [number, number, number]
 
 const ABOUT = chapterIndex('about')
 const EXPERIENCE = chapterIndex('experience')
+const PROJECTS = chapterIndex('projects')
 const UP = new THREE.Vector3(0, 1, 0)
 const scratch = new THREE.Vector3()
 const right = new THREE.Vector3()
@@ -82,6 +83,7 @@ export function CameraRig() {
     const pExperience = chapterLocalProgress(y, vh, EXPERIENCE)
     runAboutProgram(pAbout, pExperience)
     const experiencePose = runExperienceProgram(pExperience, aspect)
+    const projectsPose = runProjectsProgram(chapterLocalProgress(y, vh, PROJECTS), aspect)
     // The pose a chapter leaves the camera in, which the next leg departs from.
     const endPose = (i: number) => (i === EXPERIENCE ? EXPERIENCE_FINALE : points[i])
 
@@ -99,7 +101,8 @@ export function CameraRig() {
       const start = (CHAPTER_STARTS_VH[k] / 100) * vh - travel
       const t = ease(THREE.MathUtils.clamp((y - start) / travel, 0, 1))
       const a = endPose(k - 1)
-      const b = k === EXPERIENCE && t >= 1 && experiencePose ? experiencePose : points[k]
+      const programPose = k === EXPERIENCE ? experiencePose : k === PROJECTS ? projectsPose : null
+      const b = t >= 1 && programPose ? programPose : points[k]
       const aPos = fittedPos(a, tanHalfFov, aspect)
       const bPos = fittedPos(b, tanHalfFov, aspect)
       if (b.via) bezier(targetPos.current, aPos, b.via, bPos, t)
