@@ -9,7 +9,7 @@ import { Terminal, type TermLine } from './Terminal'
 
 export const eyebrow = 'text-[11px] uppercase tracking-[0.3em]'
 const block = 'relative z-20 w-full px-5 pb-20 md:px-10 md:pb-24'
-const half = 'md:w-1/2 md:pr-12'
+const half = 'md:w-1/2 md:pr-8'
 
 const INTRO: Record<string, { cmd: string; title: string; body: string }> = {
   about: { cmd: 'cat about.md', title: 'About me', body: 'Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.' },
@@ -26,7 +26,7 @@ const introLines = (id: string): TermLine[] => [
 /** Both the intro and the item share one grid cell, so swapping never shifts layout. */
 function Swap({ id, title, item, itemKey, wide = false }: { id: string; title: string; item: TermLine[] | null; itemKey: number; wide?: boolean }) {
   return (
-    <div className={`${block} grid ${wide ? 'max-w-2xl' : 'max-w-xl'} ${half}`}>
+    <div className={`${block} grid ${wide ? 'max-w-3xl' : 'max-w-2xl'} ${half}`}>
       <div className="col-start-1 row-start-1 transition-opacity duration-500" style={{ opacity: item ? 0 : 1 }} aria-hidden={!!item}>
         <Terminal title={`${id} — bash`} lines={introLines(id)} />
       </div>
