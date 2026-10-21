@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { CASE, FRONT_IO } from './layout'
+import { CASE } from './layout'
 import { MAT, GOLD, emissive } from './materials'
 import { sceneState } from '../state'
 
@@ -24,9 +24,7 @@ export function Case() {
   const glassZ = hd - glass / 2
 
   const stripMat = useMemo(() => emissive(GOLD, 1.0), [])
-  const ledMat = useMemo(() => emissive(GOLD, 2), [])
-  const insetMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#07080a', roughness: 0.9 }), [])
-
+  // 12 letters with tracking need the wider canvas, or the last one is clipped.
   // The glass fades away as the camera comes inside, so a dive isn't a plane clipping the lens.
   useFrame(() => {
     const t = THREE.MathUtils.clamp((sceneState.cameraZ - 0.22) / 0.25, 0, 1)
@@ -90,27 +88,6 @@ export function Case() {
         </mesh>
       ))}
 
-      {/* front IO on the outer face of the pillar: power button, two USB-A, USB-C, audio */}
-      <group position={[hw, FRONT_IO.y, FRONT_IO.z]}>
-        <mesh position={[0.001, 0.07, 0]} rotation={[0, 0, Math.PI / 2]} material={MAT.darkMetal}>
-          <cylinderGeometry args={[0.0075, 0.0075, 0.003, 32]} />
-        </mesh>
-        <mesh position={[0.0026, 0.07, 0]} rotation={[0, Math.PI / 2, 0]} material={ledMat}>
-          <torusGeometry args={[0.0082, 0.0008, 6, 40]} />
-        </mesh>
-        <mesh position={[0, 0.035, 0]} material={insetMat}>
-          <boxGeometry args={[0.003, 0.006, 0.014]} />
-        </mesh>
-        <mesh position={[0, 0.015, 0]} material={insetMat}>
-          <boxGeometry args={[0.003, 0.006, 0.014]} />
-        </mesh>
-        <mesh position={[0, -0.005, 0]} material={insetMat}>
-          <boxGeometry args={[0.003, 0.0035, 0.0095]} />
-        </mesh>
-        <mesh position={[0.001, -0.025, 0]} rotation={[0, 0, Math.PI / 2]} material={insetMat}>
-          <cylinderGeometry args={[0.0032, 0.0032, 0.003, 20]} />
-        </mesh>
-      </group>
     </group>
   )
 }

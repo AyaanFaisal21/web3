@@ -1,12 +1,13 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { RAM } from './layout'
 import { MAT, GOLD, WARM_WHITE, emissive } from './materials'
 import { STICK, chipLocal, stickPose } from './ramExplode'
-import { sceneState } from '../state'
+import { sceneState, selectChapter } from '../state'
 import { EXPERIENCES } from '@/lib/content/experience'
 
 const vertexShader = /* glsl */ `
@@ -60,6 +61,8 @@ function makeChipLabel(lines: [string, string, string], strong: boolean) {
 const entryAt = (stick: number, slot: number) => EXPERIENCES.findIndex((e) => e.stick === stick && e.slot === slot)
 
 export function Ram() {
+  const [hover, setHover] = useState(false)
+  useCursor(hover)
   const sticks = useRef<(THREE.Group | null)[]>([])
   const fronts = useRef<(THREE.Group | null)[]>([])
   const barMats = useMemo(
@@ -107,7 +110,17 @@ export function Ram() {
   const body = STICK.height - 0.002
 
   return (
-    <group>
+    <group
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        setHover(true)
+      }}
+      onPointerOut={() => setHover(false)}
+      onClick={(e) => {
+        e.stopPropagation()
+        selectChapter('experience')
+      }}
+    >
       {Array.from({ length: RAM.count }, (_, i) => (
         <group key={i} ref={(el) => { sticks.current[i] = el }}>
           <mesh material={pcbMat}>

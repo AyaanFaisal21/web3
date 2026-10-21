@@ -85,25 +85,16 @@ export function ProjectsCopy() {
   return <Swap id="projects" title={`projects/${entry?.key ?? ''} — bash`} item={lines} itemKey={project} wide />
 }
 
-const SOCIALS = [
-  { label: 'github.com/AyaanFaisal21', href: 'https://github.com/AyaanFaisal21' },
-  { label: 'linkedin.com/in/ayaanfaisal21', href: 'https://www.linkedin.com/in/ayaanfaisal21/' },
-  { label: 'x.com/unorth_doX', href: 'https://x.com/unorth_doX' },
-  { label: 'resume.pdf', href: 'https://drive.google.com/file/d/139lJn3_8caRHtZbu62m21gOkHSnOi0kh/view?usp=sharing' },
-]
-
 export function ConnectCopy() {
-  const lines: TermLine[] = [
-    { kind: 'cmd', text: 'cat contact.txt' },
-    { kind: 'h1', text: "Don't be a Stranger" },
-    { kind: 'text', text: "Whether it's a role, a project, or just a conversation — reach out, I'm always down to talk." },
-    { kind: 'blank' },
-    { kind: 'cmd', text: 'ls links/' },
-    ...SOCIALS.map((s): TermLine => ({ kind: 'link', label: s.label, href: s.href })),
-  ]
   return (
-    <div className={`${block} max-w-xl`}>
-      <Terminal title="contact — bash" lines={lines} />
+    <div className={`${block} max-w-xl md:w-1/2`}>
+      <p className={`${eyebrow} text-white/55`}>Connect</p>
+      <h2 className="font-display mt-3 text-4xl leading-none md:text-5xl" style={{ color: '#d6bb6a' }}>
+        {"Don't be a Stranger"}
+      </h2>
+      <p className="mt-4 font-mono text-[14px] leading-relaxed text-white/60">
+        The buttons down the front of the case: the power button copies my email, the others open in a new tab.
+      </p>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { Ram } from './Ram'
 import { Gpu } from './Gpu'
 import { Cables } from './Cables'
 import { Fan } from './Fan'
+import { FrontPanel } from './FrontPanel'
 import { BOTTOM_FANS_X, BOTTOM_FAN_Y, CASE, CPU, FRONT_IO, REAR_FAN, TOP_FANS_X, TOP_FAN_Y } from './layout'
 import { GOLD, GOLD_SOFT } from './materials'
 
@@ -21,6 +22,7 @@ export function PC({ nameFont }: { nameFont: string }) {
       <Ram />
       <Gpu fontFamily={nameFont} />
       <Cables />
+      <FrontPanel />
 
       {/* radiator fans blow up through the top; the viewer sees their undersides */}
       {TOP_FANS_X.map((x, i) => (

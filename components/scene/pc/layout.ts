@@ -91,8 +91,21 @@ export const BOTTOM_FANS_X = [-0.12, 0, 0.12]
 export const BOTTOM_FAN_Y = INNER.yMin + FAN.depth / 2
 export const REAR_FAN = { x: INNER.xMin + FAN.depth / 2, y: 0.11, z: -0.02 }
 
-/** Front panel IO on the outer face of the front pillar: the Connect chapter's subject. */
-export const FRONT_IO = { x: CASE.w / 2, y: -0.09, z: 0.085 }
+/**
+ * The outer face of the front pillar: the name plate across the top, and below it a column of
+ * buttons that are the site's links. FRONT_IO is the column's centre; the Connect camera and
+ * the exterior light use it.
+ */
+export const FRONT_IO = { x: CASE.w / 2, y: 0.008, z: 0.035 }
+export const FRONT_PANEL = {
+  z: 0.035,
+  /** The big power button at the top of the column: pressing it copies the email. */
+  power: { y: 0.066, r: 0.015 },
+  /** Four link buttons below it, one per row. */
+  links: { y0: 0.026, pitchY: 0.038, r: 0.0105 },
+  /** Gap between a button's bezel and its label, which sits to its right. */
+  labelGap: 0.005,
+}
 
 /**
  * The CPU die under the heat spreader: eight cores in two rows with the L3 cache between

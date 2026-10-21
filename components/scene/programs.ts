@@ -1,10 +1,9 @@
 import * as THREE from 'three'
-import { CORES } from '@/lib/content/about'
-import { EXPERIENCES } from '@/lib/content/experience'
-import { PROJECTS } from '@/lib/content/projects'
 import { chipWorld } from './pc/ramExplode'
 import { GDDR, GDDR_SIZE, PCB_FACE_Y, blockLocal, cardToWorld } from './pc/gpuLayout'
-import { activeChip, activeCore, activeProject, sceneState } from './state'
+import { EXPERIENCES } from '@/lib/content/experience'
+import { PROJECTS } from '@/lib/content/projects'
+import { sceneState } from './state'
 import type { Waypoint } from './waypoints'
 
 export const ease = (t: number) => t * t * (3 - 2 * t)
@@ -14,56 +13,43 @@ export function smooth(p: number, a: number, b: number) {
   return ease(THREE.MathUtils.clamp((p - a) / (b - a), 0, 1))
 }
 
-/** Index of the stop a tour is on, or -1 outside its window. */
-function stopAt(p: number, start: number, end: number, count: number) {
-  if (p <= start || p >= end) return -1
-  return Math.min(count - 1, Math.floor(((p - start) / (end - start)) * count))
-}
-
 function frame(aspect: number, landscape: [number, number], portrait: [number, number]): Waypoint['frame'] {
   return aspect >= 1 ? { landscape, portrait: [0, 0] } : { landscape: [0, 0], portrait }
 }
 
 /**
- * The About chapter: the pump block lifts, the heat spreader follows, the die view fades in
- * and the tour visits each core. The stack stays open through Experience and closes in that
- * chapter's finale, after the RAM has rebuilt (lid first, then the block drops).
+ * Each program turns its chapter's drive (0 closed … 1 fully open) into part poses. Which
+ * entry is in focus is the visitor's choice, kept in the state signals, not a function of the
+ * drive, so a tour can be stepped in either direction.
  */
-export function runAboutProgram(pAbout: number, pExperience: number) {
-  const about = sceneState.about
-  about.explode = Math.min(smooth(pAbout, 0, 0.1), 1 - smooth(pExperience, 0.94, 1))
-  about.lid = Math.min(smooth(pAbout, 0.07, 0.16), 1 - smooth(pExperience, 0.9, 0.95))
-  about.dieOpacity = smooth(pAbout, 0.12, 0.18) * (1 - smooth(pAbout, 0.92, 0.97))
-  activeCore.set(stopAt(pAbout, 0.18, 0.92, CORES.length))
-}
 
-/** Where the Experience chapter leaves the camera: a wide shot of the rebuilt RAM and the stack closing. */
-export const EXPERIENCE_FINALE: Waypoint = { pos: [-0.02, 0.1, 0.36], look: [-0.055, 0.085, -0.05], fit: 0.22 }
+/** About: the pump block lifts, the heat spreader follows, then the die view fades in. */
+export function runAboutProgram(open: number) {
+  const about = sceneState.about
+  about.explode = smooth(open, 0, 0.55)
+  about.lid = smooth(open, 0.3, 0.8)
+  about.dieOpacity = smooth(open, 0.62, 1)
+}
 
 const chipPos = new THREE.Vector3()
 
 /**
- * The Experience chapter: sticks rise, turn and fan out (staggered), the front spreaders
- * slide off, the camera visits each entry's chip, then everything rebuilds. Returns the
- * camera pose the hold should use, or null for the chapter's waypoint (the overview).
+ * Experience: sticks rise, turn and fan out (staggered), then the front spreaders slide off.
+ * Returns the camera pose for the chip in focus once the sticks are bared, or null for the
+ * chapter's overview waypoint.
  */
-export function runExperienceProgram(pExperience: number, aspect: number): Waypoint | null {
+export function runExperienceProgram(open: number, chip: number, aspect: number): Waypoint | null {
   const ram = sceneState.ram
-  for (let i = 0; i < ram.open.length; i++) {
-    const opening = smooth(pExperience, i * 0.02, 0.16 + i * 0.02)
-    const closing = 1 - smooth(pExperience, 0.84 + i * 0.015, 0.92 + i * 0.015)
-    ram.open[i] = Math.min(opening, closing)
+  for (let i = 0; i < ram.open.length; i++) ram.open[i] = smooth(open, i * 0.06, 0.62 + i * 0.06)
+  ram.bare = smooth(open, 0.68, 0.96)
+  if (chip < 0 || open < 0.9) return null
+  const e = EXPERIENCES[chip]
+  chipWorld(e.stick, e.slot, 1, chipPos)
+  return {
+    pos: [chipPos.x + 0.022, chipPos.y + 0.006, chipPos.z + 0.05],
+    look: [chipPos.x, chipPos.y, chipPos.z],
+    frame: frame(aspect, [-0.012, 0], [0, -0.008]),
   }
-  ram.bare = Math.min(smooth(pExperience, 0.17, 0.24), 1 - smooth(pExperience, 0.79, 0.85))
-  const chip = stopAt(pExperience, 0.25, 0.84, EXPERIENCES.length)
-  activeChip.set(chip)
-  if (chip >= 0) {
-    const e = EXPERIENCES[chip]
-    chipWorld(e.stick, e.slot, 1, chipPos)
-    return { pos: [chipPos.x + 0.022, chipPos.y + 0.006, chipPos.z + 0.05], look: [chipPos.x, chipPos.y, chipPos.z], frame: frame(aspect, [-0.012, 0], [0, -0.008]) }
-  }
-  if (pExperience >= 0.84) return EXPERIENCE_FINALE
-  return null
 }
 
 const blockPos = new THREE.Vector3()
@@ -71,18 +57,15 @@ const gddrPos = new THREE.Vector3()
 const midPos = new THREE.Vector3()
 
 /**
- * The Projects chapter: the card slides out and turns to the glass, the shroud and heatsink
- * lift away, and the camera visits each project's block on the bared die (or a memory
- * controller and the GDDR package it feeds). Returns the hold's camera pose, or null for
- * the overview waypoint.
+ * Projects: the card slides out and turns to the glass, then the shroud and heatsink lift
+ * away. Returns the camera pose for the block in focus on the bared die (or a memory
+ * controller and the GDDR package it feeds), or null for the overview waypoint.
  */
-export function runProjectsProgram(pProjects: number, aspect: number): Waypoint | null {
+export function runProjectsProgram(open: number, project: number, aspect: number): Waypoint | null {
   const gpu = sceneState.gpu
-  gpu.out = Math.min(smooth(pProjects, 0, 0.08), 1 - smooth(pProjects, 0.95, 1))
-  gpu.bare = Math.min(smooth(pProjects, 0.08, 0.17), 1 - smooth(pProjects, 0.9, 0.95))
-  const project = stopAt(pProjects, 0.19, 0.89, PROJECTS.length)
-  activeProject.set(project)
-  if (project < 0) return null
+  gpu.out = smooth(open, 0, 0.5)
+  gpu.bare = smooth(open, 0.45, 0.88)
+  if (project < 0 || open < 0.85) return null
   const { kind, index } = PROJECTS[project].block
   cardToWorld(blockLocal(kind, index), 1, blockPos)
   if (kind === 'mc') {

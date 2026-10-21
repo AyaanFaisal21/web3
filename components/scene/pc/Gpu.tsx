@@ -1,14 +1,15 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { CARD, cardPose } from './gpuLayout'
 import { MAT, GOLD, emissive } from './materials'
 import { GpuBoard } from './GpuBoard'
-import { sceneState } from '../state'
+import { sceneState, selectChapter } from '../state'
 
-const NAME = 'AYAAN'
+const NAME = 'AYAAN FAISAL'
 const ease = (t: number) => t * t * (3 - 2 * t)
 const smooth = (p: number, a: number, b: number) => ease(Math.min(1, Math.max(0, (p - a) / (b - a))))
 
@@ -16,7 +17,7 @@ const smooth = (p: number, a: number, b: number) => ease(Math.min(1, Math.max(0,
 function useNameTexture(fontFamily: string) {
   const { texture, canvas } = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 1024
+    canvas.width = 1280
     canvas.height = 256
     const texture = new THREE.CanvasTexture(canvas)
     texture.colorSpace = THREE.SRGBColorSpace
@@ -24,7 +25,7 @@ function useNameTexture(fontFamily: string) {
     return { texture, canvas }
   }, [])
   useEffect(() => {
-    const font = `400 168px ${fontFamily}`
+    const font = `400 150px ${fontFamily}`
     const draw = () => {
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D & { letterSpacing?: string }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -55,6 +56,8 @@ function useNameTexture(fontFamily: string) {
  */
 export function Gpu({ fontFamily }: { fontFamily: string }) {
   const card = useRef<THREE.Group>(null)
+  const [hover, setHover] = useState(false)
+  useCursor(hover)
   const shroud = useRef<THREE.Group>(null)
   const heatsink = useRef<THREE.Group>(null)
   const fans = useRef<(THREE.Group | null)[]>([])
@@ -94,7 +97,18 @@ export function Gpu({ fontFamily }: { fontFamily: string }) {
   const edgeZ = CARD.height / 2
   const fanY = CARD.shroudY - CARD.shroudT / 2 - 0.002
   return (
-    <group ref={card}>
+    <group
+      ref={card}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        setHover(true)
+      }}
+      onPointerOut={() => setHover(false)}
+      onClick={(e) => {
+        e.stopPropagation()
+        selectChapter('projects')
+      }}
+    >
       <mesh position={[0, CARD.backplateY, 0]} material={MAT.darkMetal}>
         <boxGeometry args={[CARD.length - 0.012, 0.002, CARD.height - 0.008]} />
       </mesh>
@@ -143,7 +157,7 @@ export function Gpu({ fontFamily }: { fontFamily: string }) {
           <boxGeometry args={[CARD.length - 0.024, CARD.thickness - 0.014, 0.0012]} />
         </mesh>
         <mesh position={[0.018, 0.0045, edgeZ + 0.0016]} material={m.name}>
-          <planeGeometry args={[0.2, 0.05]} />
+          <planeGeometry args={[0.22, 0.044]} />
         </mesh>
         <mesh position={[0, -0.0215, edgeZ + 0.0014]} material={m.accent}>
           <boxGeometry args={[CARD.length - 0.07, 0.0014, 0.0008]} />
