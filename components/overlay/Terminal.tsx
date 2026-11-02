@@ -6,6 +6,8 @@ export type TermLine =
   | { kind: 'cmd'; text: string; cwd?: string }
   | { kind: 'h1'; text: string }
   | { kind: 'meta'; label: string; text: string }
+  /** A category badge in its own colour, for the kind of thing an entry is. */
+  | { kind: 'tag'; text: string; color: string }
   | { kind: 'text'; text: ReactNode }
   | { kind: 'item'; text: ReactNode }
   | { kind: 'link'; label: string; href: string }
@@ -64,6 +66,14 @@ export function Terminal({ title, lines, className = '' }: { title: string; line
                   {line.text}
                 </div>
               )
+            case 'tag':
+              return (
+                <div key={i} className="term-line term-tag" style={style}>
+                  <span className="term-tag-pill" style={{ color: line.color, borderColor: line.color }}>
+                    {line.text}
+                  </span>
+                </div>
+              )
             case 'item':
               return (
                 <div key={i} className="term-line term-item" style={style}>
@@ -75,7 +85,7 @@ export function Terminal({ title, lines, className = '' }: { title: string; line
               return (
                 <div key={i} className="term-line" style={style}>
                   <a href={line.href} target="_blank" rel="noopener noreferrer" className="term-link pointer-events-auto">
-                    → {line.label}
+                    →&nbsp;{line.label}
                   </a>
                 </div>
               )
@@ -83,13 +93,13 @@ export function Terminal({ title, lines, className = '' }: { title: string; line
               return <div key={i} className="term-line term-blank" aria-hidden />
             default:
               return (
-                <div key={i} className="term-line" style={style}>
+                <div key={i} className="term-line term-text" style={style}>
                   {line.text}
                 </div>
               )
           }
         })}
-        <div className="term-line" style={{ animationDelay: `${delay}ms` }} aria-hidden>
+        <div className="term-line term-end" style={{ animationDelay: `${delay}ms` }} aria-hidden>
           <span className="term-prompt">{USER}:~$</span> <span className="term-caret" />
         </div>
       </div>

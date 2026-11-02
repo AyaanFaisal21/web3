@@ -32,7 +32,7 @@ function Swap({ id, title, item, itemKey, wide = false }: { id: string; title: s
       </div>
       {item && (
         <div key={itemKey} className="col-start-1 row-start-1">
-          <Terminal title={title} lines={item} className="max-h-[62vh] md:max-h-none" />
+          <Terminal title={title} lines={item} className="pointer-events-auto max-h-[62vh] md:max-h-[calc(100dvh_-_11rem)]" />
         </div>
       )}
     </div>
@@ -46,6 +46,7 @@ export function AboutCopy() {
     { kind: 'cmd', text: `cat cores/${String(core).padStart(2, '0')}-${entry.key}.md`, cwd: '~/about' },
     { kind: 'h1', text: entry.title },
     { kind: 'meta', label: 'core', text: `${core + 1} / ${CORES.length}` },
+    { kind: 'blank' },
     { kind: 'text', text: entry.body },
   ]
   return <Swap id="about" title={`about/${entry?.key ?? ''} — bash`} item={lines} itemKey={core} />
@@ -70,18 +71,26 @@ export function ExperienceCopy() {
 export function ProjectsCopy() {
   const project = useSyncExternalStore(activeProject.subscribe, activeProject.get, () => -1)
   const entry = project >= 0 ? PROJECTS[project] : null
-  const lines: TermLine[] | null = entry && [
-    { kind: 'cmd', text: `cat ${entry.key}.md`, cwd: '~/projects' },
-    { kind: 'h1', text: entry.subtitle ? `${entry.title} — ${entry.subtitle}` : entry.title },
-    { kind: 'meta', label: 'block', text: `${CATEGORIES[entry.category].block} · ${project + 1} / ${PROJECTS.length}` },
-    { kind: 'meta', label: 'kind', text: CATEGORIES[entry.category].label },
-    { kind: 'meta', label: 'stack', text: entry.stack.join(' · ') },
-    { kind: 'blank' },
-    { kind: 'text', text: entry.description },
-    ...entry.facts.map((f): TermLine => ({ kind: 'item', text: f })),
-    ...(entry.url ? [{ kind: 'link', label: entry.url.replace(/^https?:\/\//, ''), href: entry.url } as TermLine] : []),
-    ...(entry.repo ? [{ kind: 'link', label: entry.repo.replace(/^https?:\/\//, ''), href: entry.repo } as TermLine] : []),
-  ]
+  const category = entry && CATEGORIES[entry.category]
+  const links: TermLine[] = entry
+    ? [
+        ...(entry.url ? [{ kind: 'link', label: entry.url.replace(/^https?:\/\//, ''), href: entry.url } as TermLine] : []),
+        ...(entry.repo ? [{ kind: 'link', label: entry.repo.replace(/^https?:\/\//, ''), href: entry.repo } as TermLine] : []),
+      ]
+    : []
+  const lines: TermLine[] | null = entry &&
+    category && [
+      { kind: 'cmd', text: `cat ${entry.key}.md`, cwd: '~/projects' },
+      { kind: 'h1', text: entry.subtitle ? `${entry.title} — ${entry.subtitle}` : entry.title },
+      { kind: 'tag', text: category.label, color: category.color },
+      { kind: 'meta', label: 'where', text: `${category.block} · ${project + 1} / ${PROJECTS.length}` },
+      { kind: 'meta', label: 'stack', text: entry.stack.join(' · ') },
+      { kind: 'blank' },
+      { kind: 'text', text: entry.description },
+      { kind: 'blank' },
+      ...entry.facts.map((f): TermLine => ({ kind: 'item', text: f })),
+      ...(links.length ? [{ kind: 'blank' } as TermLine, ...links] : []),
+    ]
   return <Swap id="projects" title={`projects/${entry?.key ?? ''} — bash`} item={lines} itemKey={project} wide />
 }
 
