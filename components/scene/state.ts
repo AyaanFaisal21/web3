@@ -118,11 +118,6 @@ export function selectChapter(id: ChapterId) {
   activeChapter.set(id)
 }
 
-/** The item in focus in the current chapter, or -1 for its intro. */
-export function currentItem() {
-  return itemSignal(sceneState.chapter)?.get() ?? -1
-}
-
 /** Moves the current chapter's tour by `delta` entries; -1 is the intro, so the first step lands on entry 0. */
 export function stepItem(delta: number) {
   const id = sceneState.chapter
@@ -130,11 +125,6 @@ export function stepItem(delta: number) {
   const count = ITEM_COUNTS[id]
   if (!sig || !count) return
   sig.set(Math.min(count - 1, Math.max(-1, sig.get() + delta)))
-}
-
-export function setItem(index: number) {
-  const sig = itemSignal(sceneState.chapter)
-  if (sig) sig.set(index)
 }
 
 export function bindSceneState() {

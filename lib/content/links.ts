@@ -2,7 +2,7 @@
  * The Connect chapter's links, pressed from the buttons on the PC's front panel. The power
  * button is the email; the others open in a new tab. Edit here; nothing else changes.
  */
-export const EMAIL = 'ayaanf205@gmail.com'
+const EMAIL = 'ayaanf205@gmail.com'
 
 export type SiteLink = { key: string; label: string; href: string }
 

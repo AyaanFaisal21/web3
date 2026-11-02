@@ -53,7 +53,6 @@ export const RAM = {
   x0: BOARD.x + 0.03, // first slot
   y: BOARD.y + 0.085,
 }
-export const RAM_TOP_Z = BOARD_FACE_Z + RAM.height
 export const RAM_CENTER_X = RAM.x0 + (RAM.pitch * (RAM.count - 1)) / 2
 
 /**
@@ -92,19 +91,16 @@ export const BOTTOM_FAN_Y = INNER.yMin + FAN.depth / 2
 export const REAR_FAN = { x: INNER.xMin + FAN.depth / 2, y: 0.11, z: -0.02 }
 
 /**
- * The outer face of the front pillar: the name plate across the top, and below it a column of
- * buttons that are the site's links. FRONT_IO is the column's centre; the Connect camera and
- * the exterior light use it.
+ * The outer face of the front pillar carries a column of buttons that are the site's links.
+ * FRONT_IO is the column's centre; the Connect camera and the exterior light use it.
  */
 export const FRONT_IO = { x: CASE.w / 2, y: 0.008, z: 0.035 }
 export const FRONT_PANEL = {
   z: 0.035,
   /** The big power button at the top of the column: pressing it copies the email. */
   power: { y: 0.066, r: 0.015 },
-  /** Four link buttons below it, one per row. */
+  /** The link buttons below it, one per row. */
   links: { y0: 0.026, pitchY: 0.038, r: 0.0105 },
-  /** Gap between a button's bezel and its label, which sits to its right. */
-  labelGap: 0.005,
 }
 
 /**

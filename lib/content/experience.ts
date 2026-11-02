@@ -18,8 +18,6 @@ export type ExperienceEntry = {
   slot: number
 }
 
-export const CHIPS_PER_STICK = 8
-
 export const EXPERIENCES: ExperienceEntry[] = [
   {
     key: 'universal-selfcare',

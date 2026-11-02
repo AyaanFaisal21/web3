@@ -8,7 +8,7 @@ import { MAT, GLOW, emissive } from './materials'
 import { sceneState } from '../state'
 
 /** How far the heat spreader lifts off the die when the About chapter opens the CPU. */
-export const IHS_LIFT = 0.035
+const IHS_LIFT = 0.035
 
 /**
  * The processor in its socket: retention bracket, substrate, the die with its eight core

@@ -10,7 +10,7 @@ import { tube } from './geometry'
 import { sceneState, selectChapter } from '../state'
 
 /** How far the pump block lifts off the CPU when the About chapter pulls the stack apart. */
-export const COOLER_LIFT = 0.09
+const COOLER_LIFT = 0.09
 
 type Vec = [number, number, number]
 
