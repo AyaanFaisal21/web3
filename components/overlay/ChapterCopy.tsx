@@ -12,7 +12,7 @@ const block = 'relative z-20 w-full px-5 pb-20 md:px-10 md:pb-24'
 const half = 'md:w-1/2 md:pr-8'
 
 const INTRO: Record<string, { cmd: string; title: string; body: string }> = {
-  about: { cmd: 'cat about.md', title: 'About me', body: 'Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.' },
+  about: { cmd: 'cat about.md', title: 'About me', body: "Builder first. I'm drawn to computer hardware and to what runs underneath software, and I build things to be human-centered and worth their impact." },
   experience: { cmd: 'cat experience.md', title: 'Experience', body: 'Where I have worked, one DRAM package per role, most recent first.' },
   projects: { cmd: 'cat projects.md', title: 'Projects', body: 'Fourteen builds mapped onto the die by what they are: kernels and systems in the SMs, models in the Tensor Cores, products in the memory system.' },
 }

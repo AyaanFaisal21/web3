@@ -6,8 +6,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Ayaan Faisal',
-  description:
-    'Software and intelligent systems engineer. Ambitious innovator, designer and engineer building scalable business solutions and human-centered technology.',
+  description: 'Builder with an interest in computer hardware, human-centered technology and impact.',
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
