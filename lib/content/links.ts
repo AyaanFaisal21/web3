@@ -9,8 +9,7 @@ export type SiteLink = { key: string; label: string; href: string }
 export const LINKS: SiteLink[] = [
   { key: 'github', label: 'GitHub', href: 'https://github.com/AyaanFaisal21' },
   { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/ayaanfaisal21/' },
-  { key: 'x', label: 'X', href: 'https://x.com/unorth_doX' },
-  { key: 'resume', label: 'Resume', href: 'https://drive.google.com/file/d/139lJn3_8caRHtZbu62m21gOkHSnOi0kh/view?usp=sharing' },
+  { key: 'resume', label: 'Resume', href: 'https://drive.google.com/file/d/1PnMkKbz0tW5yD7QxN5HltIdwNWfisRlw/view?usp=sharing' },
 ]
 
 export function openLink(href: string) {
