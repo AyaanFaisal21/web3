@@ -145,6 +145,31 @@ body {
   }
 }
 
+/* Callout boxes: a chapter's name beside the part that holds it, tied to it by a leader line. */
+.callout-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.callout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  font-family: var(--font-geist-mono), ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(236, 230, 214, 0.92);
+  background: rgba(5, 6, 9, 0.86);
+  border: 1px solid rgba(217, 183, 122, 0.7);
+  border-radius: 2px;
+  padding: 7px 10px;
+  white-space: nowrap;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
 /* Terminal windows: every text box is a shell session. */
 .term {
   font-family: var(--font-geist-mono), ui-monospace, Consolas, monospace;

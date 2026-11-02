@@ -6,6 +6,7 @@ import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { CASE, FRONT_PANEL } from './layout'
 import { MAT, GOLD, emissive } from './materials'
+import { Callout } from '../Callouts'
 import { LINKS, copyEmail, openLink } from '@/lib/content/links'
 
 const RING_IDLE = 1.3
@@ -109,8 +110,8 @@ type ButtonProps = {
 
 /**
  * A round, backlit button standing proud of the pillar face: a lit bezel that brightens under
- * the pointer and a cap with its icon that sinks while pressed. Pointer events come from the
- * canvas, so the HTML overlay must stay pointer-events-none.
+ * the pointer and a cap with its icon that sinks while pressed. Its name sits in a callout box
+ * beside it. Pointer events come from the canvas, so the HTML overlay must stay pointer-events-none.
  */
 function PanelButton({ y, z, r, icon, onPress }: ButtonProps) {
   const [hover, setHover] = useState(false)
@@ -166,6 +167,7 @@ function PanelButton({ y, z, r, icon, onPress }: ButtonProps) {
 
 /** The front panel: a column of buttons, the power button on top for the email, the links below. */
 export function FrontPanel() {
+  const [copied, setCopied] = useState(false)
   const icons = useMemo(
     () => ({
       power: makePowerIcon(),
@@ -176,18 +178,29 @@ export function FrontPanel() {
     }),
     [],
   )
-  const pressPower = () => {
-    void copyEmail()
+  const pressPower = async () => {
+    const result = await copyEmail()
+    if (result !== 'copied') return
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 2200)
   }
 
   const { z, power, links } = FRONT_PANEL
+  const hw = CASE.w / 2
+  // Each button's box sits just to its right on the face; the home view and the Connect view show them.
+  const boxTip = (y: number): [number, number, number] => [hw + 0.016, y, z - 0.078]
+  const boxAnchor = (y: number, r: number): [number, number, number] => [hw + 0.005, y, z - r - 0.002]
   return (
     <group>
       <PanelButton y={power.y} z={z} r={power.r} icon={icons.power} onPress={pressPower} />
+      <Callout anchor={boxAnchor(power.y, power.r)} tip={boxTip(power.y)} label={copied ? 'copied to clipboard' : 'Email'} chapters={['hero', 'connect']} />
       {LINKS.map((link, i) => {
         const y = links.y0 - i * links.pitchY
         return (
-          <PanelButton key={link.key} y={y} z={z} r={links.r} icon={icons[link.key as keyof typeof icons] ?? icons.resume} onPress={() => openLink(link.href)} />
+          <group key={link.key}>
+            <PanelButton y={y} z={z} r={links.r} icon={icons[link.key as keyof typeof icons] ?? icons.resume} onPress={() => openLink(link.href)} />
+            <Callout anchor={boxAnchor(y, links.r)} tip={boxTip(y)} label={link.label} chapters={['hero', 'connect']} />
+          </group>
         )
       })}
     </group>

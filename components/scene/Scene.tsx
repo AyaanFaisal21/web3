@@ -7,6 +7,7 @@ import { Bloom, EffectComposer, ToneMapping, Vignette } from '@react-three/postp
 import { ToneMappingMode } from 'postprocessing'
 import { PC } from './pc/PC'
 import { CameraRig } from './CameraRig'
+import { CalloutBoxes, CalloutProjector, ChapterCallouts } from './Callouts'
 import { bindSceneState } from './state'
 
 export default function Scene({ nameFont }: { nameFont: string }) {
@@ -23,6 +24,7 @@ export default function Scene({ nameFont }: { nameFont: string }) {
 
         <Suspense fallback={null}>
           <PC nameFont={nameFont} />
+          <ChapterCallouts />
           {/*
             Procedural studio environment: a soft overhead panel and two side strips give the
             glass and brushed metal something to reflect, with no HDR file to download.
@@ -39,6 +41,7 @@ export default function Scene({ nameFont }: { nameFont: string }) {
         <ambientLight intensity={0.12} />
 
         <CameraRig />
+        <CalloutProjector />
 
         <EffectComposer multisampling={4}>
           <Bloom mipmapBlur intensity={0.8} luminanceThreshold={1} luminanceSmoothing={0.3} radius={0.6} />
@@ -46,6 +49,7 @@ export default function Scene({ nameFont }: { nameFont: string }) {
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         </EffectComposer>
       </Canvas>
+      <CalloutBoxes />
     </div>
   )
 }
