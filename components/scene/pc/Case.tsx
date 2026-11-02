@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { CASE } from './layout'
-import { MAT, GOLD, emissive } from './materials'
+import { MAT, GLOW, emissive } from './materials'
 import { sceneState } from '../state'
 
 const GLASS_OPACITY = 0.16
@@ -23,7 +23,7 @@ export function Case() {
   const border = 0.014
   const glassZ = hd - glass / 2
 
-  const stripMat = useMemo(() => emissive(GOLD, 1.0), [])
+  const stripMat = useMemo(() => emissive(GLOW, 1.0), [])
   // 12 letters with tracking need the wider canvas, or the last one is clipped.
   // The glass fades away as the camera comes inside, so a dive isn't a plane clipping the lens.
   useFrame(() => {

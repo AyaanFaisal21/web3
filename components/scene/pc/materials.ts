@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 
-/** Brand palette: the warm gold of the web2 hero type, plus the white it bleeds into. */
-export const GOLD = '#ffb866'
-export const GOLD_SOFT = '#ffd199'
-export const WARM_WHITE = '#fff1dc'
+/** The glow: LED red on every lit part, the softer red the fill lights cast, and the near-white the RAM pulses up to. */
+export const GLOW = '#ff2e2e'
+export const GLOW_SOFT = '#ff6a5a'
+export const GLOW_PEAK = '#ffd6cf'
 
 /**
  * Shared, module-level materials. Creating them once keeps draw calls batched by material

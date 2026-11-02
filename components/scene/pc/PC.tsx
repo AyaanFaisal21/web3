@@ -10,7 +10,7 @@ import { Cables } from './Cables'
 import { Fan } from './Fan'
 import { FrontPanel } from './FrontPanel'
 import { BOTTOM_FANS_X, BOTTOM_FAN_Y, CASE, CPU, FRONT_IO, REAR_FAN, TOP_FANS_X, TOP_FAN_Y } from './layout'
-import { GOLD, GOLD_SOFT } from './materials'
+import { GLOW, GLOW_SOFT } from './materials'
 
 export function PC({ nameFont }: { nameFont: string }) {
   return (
@@ -32,7 +32,7 @@ export function PC({ nameFont }: { nameFont: string }) {
           rotation={[Math.PI / 2, 0, 0]}
           strips={['py']}
           speed={8 + i * 0.7}
-          color={GOLD}
+          color={GLOW}
         />
       ))}
       {/* floor intake fans, faces up */}
@@ -43,7 +43,7 @@ export function PC({ nameFont }: { nameFont: string }) {
           rotation={[-Math.PI / 2, 0, 0]}
           strips={['ny']}
           speed={7.5 + i * 0.6}
-          color={GOLD_SOFT}
+          color={GLOW_SOFT}
         />
       ))}
       {/* rear exhaust */}
@@ -53,16 +53,16 @@ export function PC({ nameFont }: { nameFont: string }) {
         strips={['nx']}
         ringIntensity={1.3}
         speed={9.5}
-        color={GOLD}
+        color={GLOW}
       />
 
       {/* the lit parts light the interior: warm, short-range, kept clear of the panels */}
-      <pointLight position={[-0.015, 0.11, 0.03]} color={GOLD} intensity={0.32} distance={0.55} decay={2} />
-      <pointLight position={[0, -0.14, 0.03]} color={GOLD_SOFT} intensity={0.26} distance={0.55} decay={2} />
-      <pointLight position={[CPU.x, CPU.y, -0.03]} color="#ffdcb0" intensity={0.18} distance={0.4} decay={2} />
-      <pointLight position={[-0.03, -0.03, 0.05]} color="#ffe6c8" intensity={0.22} distance={0.5} decay={2} />
+      <pointLight position={[-0.015, 0.11, 0.03]} color={GLOW} intensity={0.32} distance={0.55} decay={2} />
+      <pointLight position={[0, -0.14, 0.03]} color={GLOW_SOFT} intensity={0.26} distance={0.55} decay={2} />
+      <pointLight position={[CPU.x, CPU.y, -0.03]} color="#ff7a68" intensity={0.18} distance={0.4} decay={2} />
+      <pointLight position={[-0.03, -0.03, 0.05]} color="#ff8f80" intensity={0.22} distance={0.5} decay={2} />
       {/* a soft light outside the front, so the brushed pillar and its IO read in the Connect chapter */}
-      <pointLight position={[CASE.w / 2 + 0.22, FRONT_IO.y + 0.12, 0.26]} color="#ffd6ae" intensity={0.5} distance={0.9} decay={2} />
+      <pointLight position={[CASE.w / 2 + 0.22, FRONT_IO.y + 0.12, 0.26]} color="#ff9a88" intensity={0.5} distance={0.9} decay={2} />
     </group>
   )
 }

@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { RAM } from './layout'
-import { MAT, GOLD, WARM_WHITE, emissive } from './materials'
+import { MAT, GLOW, GLOW_PEAK, emissive } from './materials'
 import { STICK, chipLocal, stickPose } from './ramExplode'
 import { sceneState, selectChapter } from '../state'
 import { EXPERIENCES } from '@/lib/content/experience'
@@ -18,7 +18,7 @@ const vertexShader = /* glsl */ `
   }
 `
 
-/** Light bar: a breathing gold glow plus a brighter pulse travelling up the stick, phased per stick. */
+/** Light bar: a breathing glow plus a brighter pulse travelling up the stick, phased per stick. */
 const fragmentShader = /* glsl */ `
   uniform float uTime;
   uniform float uPhase;
@@ -69,7 +69,7 @@ export function Ram() {
     () =>
       Array.from({ length: RAM.count }, (_, i) =>
         new THREE.ShaderMaterial({
-          uniforms: { uTime: { value: 0 }, uPhase: { value: -i * 0.13 }, uColor: { value: new THREE.Color(GOLD) }, uPeak: { value: new THREE.Color(WARM_WHITE) } },
+          uniforms: { uTime: { value: 0 }, uPhase: { value: -i * 0.13 }, uColor: { value: new THREE.Color(GLOW) }, uPeak: { value: new THREE.Color(GLOW_PEAK) } },
           vertexShader,
           fragmentShader,
         })),
@@ -83,7 +83,7 @@ export function Ram() {
     () => EXPERIENCES.map((e) => new THREE.MeshBasicMaterial({ map: makeChipLabel([e.chip[0], e.chip[1], 'AF·DDR5'], true), transparent: true })),
     [],
   )
-  const frameMats = useMemo(() => EXPERIENCES.map(() => emissive(GOLD, 0.12)), [])
+  const frameMats = useMemo(() => EXPERIENCES.map(() => emissive(GLOW, 0.12)), [])
 
   useFrame(({ clock }, dt) => {
     const { open, bare, chip } = sceneState.ram

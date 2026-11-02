@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { BOARD_FACE_Z, COOLER, CPU, RADIATOR } from './layout'
-import { MAT, GOLD, emissive } from './materials'
+import { MAT, GLOW, emissive } from './materials'
 import { tube } from './geometry'
 import { sceneState, selectChapter } from '../state'
 
@@ -57,7 +57,7 @@ export function Cooling() {
 
   // At rest the LCD is a dark lens; the ring and the callout box carry the chapter's name.
   const readoutMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#05060a' }), [])
-  const ringMat = useMemo(() => emissive(GOLD, 1.8), [])
+  const ringMat = useMemo(() => emissive(GLOW, 1.8), [])
   const copper = useMemo(() => new THREE.MeshStandardMaterial({ color: '#b87333', metalness: 1, roughness: 0.35 }), [])
 
   useFrame((_, dt) => {

@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { FAN } from './layout'
-import { MAT, GOLD, emissive } from './materials'
+import { MAT, GLOW, emissive } from './materials'
 
 /** A frame side that carries a light strip, in the fan's local axes (before `rotation`). */
 export type StripSide = 'px' | 'nx' | 'py' | 'ny'
@@ -73,7 +73,7 @@ function bladeGeometry(size: number) {
 export function Fan({
   position,
   rotation = [0, 0, 0],
-  color = GOLD,
+  color = GLOW,
   speed = 9,
   strips = [],
   ringIntensity = 2,

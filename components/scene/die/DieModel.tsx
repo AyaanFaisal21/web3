@@ -4,7 +4,7 @@ import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { DIE, corePosition } from '../pc/layout'
-import { GOLD, emissive } from '../pc/materials'
+import { GLOW, emissive } from '../pc/materials'
 import { sceneState } from '../state'
 
 /** The close-up die is modelled in millimetres: the board's die is in metres. */
@@ -63,7 +63,7 @@ export function DieModel({ wrap }: { wrap: RefObject<HTMLDivElement | null> }) {
   const logic = useMemo(() => new THREE.MeshStandardMaterial({ map: traces, metalness: 0.5, roughness: 0.5 }), [traces])
   const substrate = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1b3328', metalness: 0.2, roughness: 0.65 }), [])
   const cacheMat = useMemo(() => emissive('#ffd9a6', 0.16), [])
-  const edgeMats = useMemo(() => Array.from({ length: CORE_COUNT }, () => emissive(GOLD, 0.2)), [])
+  const edgeMats = useMemo(() => Array.from({ length: CORE_COUNT }, () => emissive(GLOW, 0.2)), [])
   const light = useRef<THREE.PointLight>(null)
 
   const camPos = useRef(new THREE.Vector3(0, 14, 11))
@@ -156,7 +156,7 @@ export function DieModel({ wrap }: { wrap: RefObject<HTMLDivElement | null> }) {
       <ambientLight intensity={0.25} />
       <directionalLight position={[6, 12, 8]} intensity={1.4} color="#e8edf5" />
       <directionalLight position={[-8, 6, -6]} intensity={0.4} color="#9fb4d6" />
-      <pointLight ref={light} color={GOLD} intensity={0} distance={14} decay={2} />
+      <pointLight ref={light} color={GLOW} intensity={0} distance={14} decay={2} />
     </group>
   )
 }

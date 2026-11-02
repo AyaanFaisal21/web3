@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { CARD, cardPose } from './gpuLayout'
-import { MAT, GOLD, emissive } from './materials'
+import { MAT, GLOW, emissive } from './materials'
 import { GpuBoard } from './GpuBoard'
 import { sceneState, selectChapter } from '../state'
 
@@ -67,8 +67,8 @@ export function Gpu({ fontFamily }: { fontFamily: string }) {
       shroud: new THREE.MeshStandardMaterial({ color: '#131417', metalness: 0.15, roughness: 0.7, transparent: true }),
       edge: new THREE.MeshStandardMaterial({ color: '#2b2e34', metalness: 0.95, roughness: 0.32, transparent: true }),
       blade: new THREE.MeshStandardMaterial({ color: '#30343b', metalness: 0.2, roughness: 0.55, transparent: true }),
-      ring: Object.assign(emissive(GOLD, 1.6), { transparent: true }),
-      accent: Object.assign(emissive(GOLD, 1.6), { transparent: true }),
+      ring: Object.assign(emissive(GLOW, 1.6), { transparent: true }),
+      accent: Object.assign(emissive(GLOW, 1.6), { transparent: true }),
       name: new THREE.MeshBasicMaterial({ map: nameTex, transparent: true, toneMapped: false, color: new THREE.Color(2.4, 2.1, 1.7), depthWrite: false }),
       copper: new THREE.MeshStandardMaterial({ color: '#b87333', metalness: 1, roughness: 0.35, transparent: true }),
       fin: new THREE.MeshStandardMaterial({ color: '#3a3d44', metalness: 0.9, roughness: 0.45, transparent: true }),

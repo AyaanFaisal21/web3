@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { BOARD, BOARD_FACE_Z, CPU, INNER, RAM } from './layout'
-import { MAT, GOLD, emissive } from './materials'
+import { MAT, GLOW, emissive } from './materials'
 
 /** Procedural PCB: a dark board with faint traces, a few chips and solder pads, drawn once. */
 function makeBoardTexture() {
@@ -85,7 +85,7 @@ export function Motherboard() {
     () => new THREE.MeshStandardMaterial({ map: texture, roughness: 0.72, metalness: 0.25 }),
     [texture],
   )
-  const accent = useMemo(() => emissive(GOLD, 0.6), [])
+  const accent = useMemo(() => emissive(GLOW, 0.6), [])
   const z = BOARD_FACE_Z
   const rearX = BOARD.x - BOARD.w / 2
   const trayZ = INNER.zMin + 0.0005
