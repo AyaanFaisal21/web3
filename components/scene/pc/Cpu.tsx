@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { BOARD_FACE_Z, CPU, DIE, corePosition } from './layout'
-import { MAT, GLOW, emissive } from './materials'
+import { MAT, GLOW, GLOW_SOFT, emissive } from './materials'
 import { sceneState } from '../state'
 
 /** How far the heat spreader lifts off the die when the About chapter opens the CPU. */
@@ -18,7 +18,7 @@ const IHS_LIFT = 0.035
 export function Cpu() {
   const lid = useRef<THREE.Group>(null)
   const coreMats = useMemo(() => Array.from({ length: DIE.cols * DIE.rows }, () => emissive(GLOW, 0.25)), [])
-  const cacheMat = useMemo(() => emissive('#ffd9a6', 0.12), [])
+  const cacheMat = useMemo(() => emissive(GLOW_SOFT, 0.12), [])
   const nickel = useMemo(() => new THREE.MeshStandardMaterial({ color: '#4f5359', metalness: 0.85, roughness: 0.55 }), [])
   const substrate = useMemo(() => new THREE.MeshStandardMaterial({ color: '#142a20', metalness: 0.2, roughness: 0.65 }), [])
   const silicon = useMemo(() => new THREE.MeshStandardMaterial({ color: '#0b0d12', metalness: 0.7, roughness: 0.35 }), [])

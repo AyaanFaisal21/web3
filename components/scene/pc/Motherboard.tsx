@@ -37,7 +37,7 @@ function makeBoardTexture() {
   }
   ctx.fillStyle = '#161a20'
   for (let i = 0; i < 40; i++) ctx.fillRect(rnd() * 980, rnd() * 1240, 10 + rnd() * 40, 10 + rnd() * 40)
-  ctx.fillStyle = 'rgba(200,170,90,0.25)'
+  ctx.fillStyle = 'rgba(190,115,75,0.25)'
   for (let i = 0; i < 400; i++) ctx.fillRect(rnd() * 1020, rnd() * 1276, 3, 3)
 
   const tex = new THREE.CanvasTexture(canvas)

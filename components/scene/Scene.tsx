@@ -31,7 +31,7 @@ export default function Scene({ nameFont }: { nameFont: string }) {
           */}
           <Environment resolution={256} frames={1}>
             <Lightformer form="rect" intensity={1.6} color="#ffffff" scale={[4, 1.5, 1]} position={[0, 3, 2]} target={[0, 0, 0]} />
-            <Lightformer form="rect" intensity={0.7} color="#ffe2bd" scale={[0.4, 4, 1]} position={[3.5, 0.5, 1.5]} target={[0, 0, 0]} />
+            <Lightformer form="rect" intensity={0.7} color="#ffd8d2" scale={[0.4, 4, 1]} position={[3.5, 0.5, 1.5]} target={[0, 0, 0]} />
             <Lightformer form="rect" intensity={0.45} color="#c9dcff" scale={[0.4, 4, 1]} position={[-3.5, 0.5, 1.5]} target={[0, 0, 0]} />
             <Lightformer form="rect" intensity={0.25} color="#ffffff" scale={[4, 4, 1]} position={[0, 0, -4]} target={[0, 0, 0]} />
           </Environment>

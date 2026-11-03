@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
 import * as THREE from 'three'
 import { CARD, cardPose } from './gpuLayout'
-import { MAT, GLOW, emissive } from './materials'
+import { MAT, GLOW, GLOW_PEAK, emissive } from './materials'
 import { GpuBoard } from './GpuBoard'
 import { sceneState, selectChapter } from '../state'
 
@@ -33,12 +33,12 @@ function useNameTexture(fontFamily: string) {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.letterSpacing = '0.12em'
-      ctx.shadowColor = 'rgba(255,184,102,0.9)'
+      ctx.shadowColor = GLOW
       ctx.shadowBlur = 28
-      ctx.fillStyle = '#ffe9cc'
+      ctx.fillStyle = GLOW
       ctx.fillText(NAME, canvas.width / 2 + 8, canvas.height / 2 + 6)
       ctx.shadowBlur = 0
-      ctx.fillStyle = '#fff6e8'
+      ctx.fillStyle = GLOW_PEAK
       ctx.fillText(NAME, canvas.width / 2 + 8, canvas.height / 2 + 6)
       texture.needsUpdate = true
     }
@@ -69,7 +69,7 @@ export function Gpu({ fontFamily }: { fontFamily: string }) {
       blade: new THREE.MeshStandardMaterial({ color: '#30343b', metalness: 0.2, roughness: 0.55, transparent: true }),
       ring: Object.assign(emissive(GLOW, 1.6), { transparent: true }),
       accent: Object.assign(emissive(GLOW, 1.6), { transparent: true }),
-      name: new THREE.MeshBasicMaterial({ map: nameTex, transparent: true, toneMapped: false, color: new THREE.Color(2.4, 2.1, 1.7), depthWrite: false }),
+      name: new THREE.MeshBasicMaterial({ map: nameTex, transparent: true, toneMapped: false, color: new THREE.Color(2.3, 1.0, 0.95), depthWrite: false }),
       copper: new THREE.MeshStandardMaterial({ color: '#b87333', metalness: 1, roughness: 0.35, transparent: true }),
       fin: new THREE.MeshStandardMaterial({ color: '#3a3d44', metalness: 0.9, roughness: 0.45, transparent: true }),
     }),

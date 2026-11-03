@@ -5,12 +5,20 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { CARD, FLOORPLAN, GDDR, GDDR_SIZE, GPU_DIE, PACKAGE, PCB_FACE_Y, mcPosition, smPosition, tensorPosition } from './gpuLayout'
 import { makeLabel } from './labels'
+import { GLOW_SOFT } from './materials'
 import { sceneState } from '../state'
 import { CATEGORIES, PROJECTS, type BlockKind } from '@/lib/content/projects'
 
 const SM_COUNT = FLOORPLAN.sm.cols * FLOORPLAN.sm.rows
 const projectAt = (kind: BlockKind, index: number) => PROJECTS.findIndex((p) => p.block.kind === kind && p.block.index === index)
 const DOWN: [number, number, number] = [Math.PI / 2, 0, 0]
+
+/** Light ink on a dark tile colour, dark ink on a light one, so a title reads on any category. */
+function inkFor(color: string) {
+  const c = new THREE.Color(color)
+  const luminance = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b
+  return luminance < 0.3 ? { color: 'rgba(255,236,232,0.95)', secondary: 'rgba(255,236,232,0.65)' } : { color: 'rgba(14,17,24,0.92)', secondary: 'rgba(14,17,24,0.6)' }
+}
 
 /** A dark part that glows: only the emissive term shows, so lighting never pushes it to white. */
 function glow(color: string, intensity: number) {
@@ -35,8 +43,8 @@ export function GpuBoard() {
       stage: new THREE.MeshStandardMaterial({ color: '#141618', metalness: 0.4, roughness: 0.5 }),
       inductor: new THREE.MeshStandardMaterial({ color: '#2a2d33', metalness: 0.9, roughness: 0.4 }),
       gold: new THREE.MeshStandardMaterial({ color: '#c9a24a', metalness: 1, roughness: 0.35 }),
-      l2: glow('#ffd9a6', 0.15),
-      trace: glow('#ffd9a6', 0.35),
+      l2: glow(GLOW_SOFT, 0.15),
+      trace: glow(GLOW_SOFT, 0.35),
     }),
     [],
   )
@@ -45,7 +53,7 @@ export function GpuBoard() {
     () =>
       PROJECTS.map((p) => {
         const [w, h] = p.block.kind === 'sm' ? [512, 216] : p.block.kind === 'tensor' ? [256, 164] : [512, 440]
-        return new THREE.MeshBasicMaterial({ map: makeLabel([p.title.toUpperCase(), CATEGORIES[p.category].short], w, h, { color: 'rgba(14,17,24,0.92)', secondary: 'rgba(14,17,24,0.6)' }), transparent: true })
+        return new THREE.MeshBasicMaterial({ map: makeLabel([p.title.toUpperCase(), CATEGORIES[p.category].short], w, h, inkFor(CATEGORIES[p.category].color)), transparent: true })
       }),
     [],
   )

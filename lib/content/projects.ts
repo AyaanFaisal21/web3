@@ -22,7 +22,7 @@ export type ProjectEntry = {
 }
 
 export const CATEGORIES: Record<ProjectCategory, { label: string; block: string; short: string; color: string }> = {
-  systems: { label: 'Systems, Low-Level & Hardware', block: 'Streaming Multiprocessor', short: 'SM', color: '#ffb866' },
+  systems: { label: 'Systems, Low-Level & Hardware', block: 'Streaming Multiprocessor', short: 'SM', color: '#ff2e2e' }, // the glow red, GLOW in components/scene/pc/materials.ts
   ml: { label: 'ML & Data Science', block: 'Tensor Core', short: 'TENSOR CORE', color: '#6fd3c6' },
   agentic: { label: 'Agentic & Full-Stack', block: 'Memory controller + GDDR', short: 'GDDR · MC', color: '#8fb0ff' },
 }

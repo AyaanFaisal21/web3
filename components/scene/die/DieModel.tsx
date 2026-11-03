@@ -4,7 +4,7 @@ import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { DIE, corePosition } from '../pc/layout'
-import { GLOW, emissive } from '../pc/materials'
+import { GLOW, GLOW_SOFT, emissive } from '../pc/materials'
 import { sceneState } from '../state'
 
 /** The close-up die is modelled in millimetres: the board's die is in metres. */
@@ -62,7 +62,7 @@ export function DieModel({ wrap }: { wrap: RefObject<HTMLDivElement | null> }) {
   const silicon = useMemo(() => new THREE.MeshStandardMaterial({ color: '#0c0f14', metalness: 0.65, roughness: 0.4 }), [])
   const logic = useMemo(() => new THREE.MeshStandardMaterial({ map: traces, metalness: 0.5, roughness: 0.5 }), [traces])
   const substrate = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1b3328', metalness: 0.2, roughness: 0.65 }), [])
-  const cacheMat = useMemo(() => emissive('#ffd9a6', 0.16), [])
+  const cacheMat = useMemo(() => emissive(GLOW_SOFT, 0.16), [])
   const edgeMats = useMemo(() => Array.from({ length: CORE_COUNT }, () => emissive(GLOW, 0.2)), [])
   const light = useRef<THREE.PointLight>(null)
 
