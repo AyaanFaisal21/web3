@@ -73,6 +73,8 @@ export function DieModel({ wrap }: { wrap: RefObject<HTMLDivElement | null> }) {
 
   useFrame((state, dt) => {
     const { core, dieOpacity } = sceneState.about
+    // The canvas runs on demand: keep frames coming while the chapter is open or the view is still fading out.
+    if (sceneState.chapter === 'about' || dieOpacity > 0.004) state.invalidate()
     if (wrap.current) {
       wrap.current.style.opacity = dieOpacity.toFixed(3)
       wrap.current.style.visibility = dieOpacity > 0.004 ? 'visible' : 'hidden'
